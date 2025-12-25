@@ -1,0 +1,31 @@
+{
+    "classe": "Guerreiro",
+    "dados": {
+        "nome": "Xavier",
+        "vida": 140,
+        "vida_max": 140,
+        "ataque": 19,
+        "defesa": 14,
+        "mana": 40,
+        "mana_max": 40,
+        "nivel": 3,
+        "xp": 140,
+        "xp_para_proximo": 225,
+        "inventario": [
+            {
+                "nome": "Espada Enferrujada",
+                "tipo": "arma",
+                "ataque": 3
+            }
+        ],
+        "arma": {
+            "nome": "Espada Enferrujada",
+            "tipo": "arma",
+            "ataque": 3
+        },
+        "armadura": null,
+        "defendendo": false,
+        "status": {}
+    },
+    "area": "Vilarejo"
+}
