@@ -28,14 +28,15 @@ MAPA = {
 def inimigo_aleatorio(area):
     if area == "Floresta":
         return random.choice([
-            Inimigo("Goblin", 50, 10, 4, 30),
-            Inimigo("Lobo Sombrio", 80, 18, 7, 60),
+            Inimigo("Goblin", 50, 10, 4, 30, 10),
+            Inimigo("Lobo Sombrio", 80, 18, 7, 60, 20),
         ])
 
     if area == "Montanha":
-        return Inimigo("Dragão Ancião", 250, 35, 15, 300)
+        return Inimigo("Dragão Ancião", 250, 35, 15, 300, 200)
 
     return None
+
 
 npc_vilarejo = NPC(
     "Ancião do Vilarejo",

@@ -2,7 +2,7 @@ import random
 from core.personagem import Personagem
 
 class Inimigo(Personagem):
-    def __init__(self, nome, vida, ataque, defesa, xp, ouro):
+    def __init__(self, nome, vida, ataque, defesa, xp, ouro=0):
         super().__init__(nome, vida, ataque, defesa)
         self.xp_drop = xp
         self.ouro_drop = ouro

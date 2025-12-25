@@ -25,7 +25,8 @@
         },
         "armadura": null,
         "defendendo": false,
-        "status": {}
+        "status": {},
+        "ouro": 0
     },
-    "area": "Vilarejo"
+    "area": "Floresta"
 }
