@@ -2,12 +2,14 @@ import random
 from core.inimigo import Inimigo
 from systems.batalha import batalha
 from persistence.save import salvar_jogo
+from systems.loja import loja
+from systems.npc import NPC, Quest
 
 MAPA = {
     "Vilarejo": {
         "descricao": "Um vilarejo tranquilo, com pessoas amigáveis.",
-        "opcoes": ["Explorar arredores", "Descansar", "Ir para a Floresta"],
-        "destinos": ["Vilarejo", "Vilarejo", "Floresta"]
+        "opcoes": ["Falar com o Ancião", "Ir à Loja", "Descansar", "Ir para a Floresta"],
+        "destinos": ["Vilarejo", "Vilarejo", "Vilarejo", "Floresta"]
     },
     "Floresta": {
         "descricao": "Uma floresta sombria cheia de perigos.",
@@ -19,6 +21,7 @@ MAPA = {
         "opcoes": ["Enfrentar o Dragão", "Voltar para a Floresta"],
         "destinos": ["Montanha", "Floresta"]
     }
+    
 }
 
 
@@ -33,6 +36,15 @@ def inimigo_aleatorio(area):
         return Inimigo("Dragão Ancião", 250, 35, 15, 300)
 
     return None
+
+npc_vilarejo = NPC(
+    "Ancião do Vilarejo",
+    Quest(
+        "Derrote um inimigo na floresta e volte até mim.",
+        objetivo="derrotar_floresta",
+        recompensa_ouro=50,
+    ),
+)
 
 
 def loop_mapa(jogador, area_atual):
@@ -63,6 +75,16 @@ def loop_mapa(jogador, area_atual):
             salvar_jogo(jogador, area_atual)
             continue
 
+        if area_atual == "Vilarejo":
+            if area["opcoes"][escolha] == "Falar com o Ancião":
+                npc_vilarejo.falar(jogador)
+                continue
+
+        if area["opcoes"][escolha] == "Ir à Loja":
+            loja(jogador)
+            continue
+
+
         # EXPLORAR
         if "Explorar" in area["opcoes"][escolha]:
             inimigo = inimigo_aleatorio(area_atual)
@@ -73,6 +95,9 @@ def loop_mapa(jogador, area_atual):
                     salvar_jogo(jogador, area_atual)
                     return
                 jogador.ganhar_xp(inimigo.xp_drop)
+                jogador.ouro += inimigo.ouro_drop
+                print(f"💰 Ganhou {inimigo.ouro_drop} ouro!")
+
                 print(f"⭐ Ganhou {inimigo.xp_drop} XP!")
                 salvar_jogo(jogador, area_atual)
             else:

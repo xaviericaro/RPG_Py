@@ -21,6 +21,8 @@ class Personagem:
         self.defendendo = False
         self.status = {}
 
+        self.ouro = 0
+
     def ataque_total(self):
         bonus = self.arma["ataque"] if self.arma else 0
         return self.ataque + bonus
