@@ -1,0 +1,26 @@
+{
+    "nome": "Marcos",
+    "classe": "Arqueiro",
+    "nivel": 3,
+    "xp": 140,
+    "vida": 120,
+    "vida_max": 120,
+    "mana": 50,
+    "mana_max": 50,
+    "status": {},
+    "inventario": [
+        {
+            "nome": "Po\u00e7\u00e3o de Cura",
+            "tipo": "consumivel",
+            "cura": 30
+        }
+    ],
+    "ouro": 330,
+    "quests": {
+        "limpar_floresta": {
+            "progresso": 5,
+            "aceita": true,
+            "concluida": false
+        }
+    }
+}

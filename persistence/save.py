@@ -11,10 +11,26 @@ def definir_save(path):
 
 def salvar_jogo(jogador, area):
     dados = {
-        "classe": jogador.__class__.__name__,
-        "dados": jogador.__dict__,
-        "area": area
+    "nome": jogador.nome,
+    "classe": jogador.__class__.__name__,
+    "nivel": jogador.nivel,
+    "xp": jogador.xp,
+    "vida": jogador.vida,
+    "vida_max": jogador.vida_max,
+    "mana": jogador.mana,
+    "mana_max": jogador.mana_max,
+    "status": jogador.status,
+    "inventario": jogador.inventario,
+    "ouro": jogador.ouro,
+    "quests": {
+        qid: {
+            "progresso": q.progresso,
+            "aceita": q.aceita,
+            "concluida": q.concluida
+        } for qid, q in jogador.quests.items()
     }
+}
+
 
 
     with open(SAVE_FILE, "w") as f:
@@ -31,6 +47,40 @@ def carregar_jogo():
         "Arqueiro": Arqueiro,
     }
 
-    jogador = classes[dados["classe"]](dados["dados"]["nome"])
-    jogador.__dict__.update(dados["dados"])
-    return jogador, dados["area"]
+    # cria jogador pela classe
+    jogador = classes[dados["classe"]](dados["nome"])
+
+    # restaura atributos
+    jogador.nivel = dados["nivel"]
+    jogador.xp = dados["xp"]
+    jogador.vida_max = dados.get("vida_max", jogador.vida_max)
+    jogador.vida = min(dados["vida"], jogador.vida_max)
+
+    jogador.ouro = dados["ouro"]
+    jogador.inventario = dados["inventario"]
+
+    # quests
+    jogador.quests = {}
+
+    if "quests" in dados:
+        from systems.npc import Quest
+
+        for qid, qdados in dados["quests"].items():
+            if qid == "limpar_floresta":
+                quest = Quest(
+                    quest_id="limpar_floresta",
+                    descricao="Derrote 2 inimigos na Floresta e volte até mim.",
+                    area_objetivo="Floresta",
+                    quantidade=2,
+                    recompensa_ouro=50,
+                )
+
+                quest.progresso = qdados["progresso"]
+                quest.aceita = qdados["aceita"]
+                quest.concluida = qdados["concluida"]
+
+                jogador.quests[qid] = quest
+
+    area_atual = dados.get("area", "Vilarejo")
+    return jogador, area_atual
+

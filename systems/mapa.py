@@ -4,6 +4,7 @@ from systems.batalha import batalha
 from persistence.save import salvar_jogo
 from systems.loja import loja
 from systems.npc import NPC, Quest
+from systems.npc import NPC, Quest
 
 MAPA = {
     "Vilarejo": {
@@ -38,14 +39,15 @@ def inimigo_aleatorio(area):
     return None
 
 
-npc_vilarejo = NPC(
-    "Ancião do Vilarejo",
-    Quest(
-        "Derrote um inimigo na floresta e volte até mim.",
-        objetivo="derrotar_floresta",
-        recompensa_ouro=50,
-    ),
+quest_floresta = Quest(
+    quest_id="limpar_floresta",
+    descricao="Derrote 2 inimigos na Floresta e volte até mim.",
+    area_objetivo="Floresta",
+    quantidade=2,
+    recompensa_ouro=50
 )
+
+npc_vilarejo = NPC("Ancião do Vilarejo", quest_floresta)
 
 
 def loop_mapa(jogador, area_atual):
@@ -79,7 +81,9 @@ def loop_mapa(jogador, area_atual):
         if area_atual == "Vilarejo":
             if area["opcoes"][escolha] == "Falar com o Ancião":
                 npc_vilarejo.falar(jogador)
+                jogador.quests[quest_floresta.id] = quest_floresta
                 continue
+
 
         if area["opcoes"][escolha] == "Ir à Loja":
             loja(jogador)
@@ -98,6 +102,8 @@ def loop_mapa(jogador, area_atual):
                 jogador.ganhar_xp(inimigo.xp_drop)
                 jogador.ouro += inimigo.ouro_drop
                 print(f"💰 Ganhou {inimigo.ouro_drop} ouro!")
+                for quest in jogador.quests.values():
+                    quest.registrar_evento(area_atual)
 
                 print(f"⭐ Ganhou {inimigo.xp_drop} XP!")
                 salvar_jogo(jogador, area_atual)

@@ -3,12 +3,17 @@ import random
 class Personagem:
     def __init__(self, nome, vida, ataque, defesa, mana=0):
         self.nome = nome
-        self.vida = vida
+
         self.vida_max = vida
+        self.vida = self.vida_max
+
         self.ataque = ataque
         self.defesa = defesa
-        self.mana = mana
+
         self.mana_max = mana
+        self.mana = self.mana_max
+
+        self.status = {}
 
         self.nivel = 1
         self.xp = 0
@@ -22,6 +27,8 @@ class Personagem:
         self.status = {}
 
         self.ouro = 0
+
+        self.quests = {}
 
     def ataque_total(self):
         bonus = self.arma["ataque"] if self.arma else 0
