@@ -1,10 +1,10 @@
 {
     "classe": "Guerreiro",
-    "area": "Vilarejo",
+    "area": "Floresta",
     "jogador": {
         "nome": "de",
         "nivel": 2,
-        "xp": 20,
+        "xp": 140,
         "xp_para_proximo": 150,
         "vida": 130,
         "vida_max": 130,
@@ -12,7 +12,7 @@
         "mana_max": 35,
         "ataque": 17,
         "defesa": 12,
-        "ouro": 95,
+        "ouro": 185,
         "inventario": [],
         "arma": {
             "nome": "Espada Enferrujada",

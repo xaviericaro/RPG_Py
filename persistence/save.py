@@ -71,6 +71,8 @@ def carregar_jogo():
     with open(SAVE_FILE, "r", encoding="utf-8") as f:
         dados = json.load(f)
 
+    dados_quests_salvas = dados.get("quests", {})
+
     classes = {
         "Guerreiro": Guerreiro,
         "Mago": Mago,
@@ -106,4 +108,4 @@ def carregar_jogo():
 
     area_atual = dados.get("area", "Vilarejo")
 
-    return jogador, area_atual
+    return jogador, area_atual, dados_quests_salvas

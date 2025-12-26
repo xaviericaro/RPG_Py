@@ -81,6 +81,6 @@ def carregar_quests():
             area_objetivo=q["area_objetivo"],
             quantidade=q["quantidade"],
             recompensa_ouro=q["recompensa_ouro"],
-            dialogos=q.get("dialogos", {}) # Carrega os diálogos aqui
+            dialogos=q.get("dialogos", {}) # <--- Carrega do JSON
         )
     return quests

@@ -24,7 +24,7 @@ definir_save(save_path)
 # CONTINUAR JOGO
 # =========================
 if opcao == "1" and os.path.exists(save_path):
-    jogador, area_atual = carregar_jogo()
+    jogador, area_atual, dados_quests_salvas = carregar_jogo()
 
     # 🔹 carrega quests do JSON
     jogador.quests = carregar_quests()

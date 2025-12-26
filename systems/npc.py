@@ -14,36 +14,33 @@ class NPC:
             print(f"{self.nome}: Não tenho nada para você agora.")
             return
 
-        # 1. Quest Finalizada (Entregue)
+        # --- LÓGICA DE DIÁLOGOS DINÂMICOS ---
+
+        # 1. Já terminou tudo
         if quest.entregue:
-            fala = quest.dialogos.get("entregue", "Obrigado pela ajuda de antes!")
-            print(f"{self.nome}: {fala}")
-            return
+            msg = quest.dialogos.get("entregue", "Obrigado pela ajuda!")
+            print(f"{self.nome}: {msg}")
 
-        # 2. Quest Concluída mas não entregue (Momento da recompensa)
-        if quest.concluida:
-            fala = quest.dialogos.get("concluida", "Excelente trabalho! Aqui está sua recompensa.")
-            print(f"{self.nome}: {fala}")
-            
-            if not quest.entregue:
-                jogador.ouro += quest.recompensa_ouro
-                quest.entregue = True
-                print(f"💰 Recompensa: +{quest.recompensa_ouro} ouro!")
-            return
+        # 2. Completou os objetivos, mas não recebeu a recompensa
+        elif quest.concluida:
+            msg = quest.dialogos.get("concluida", "Incrível! Você conseguiu.")
+            print(f"{self.nome}: {msg}")
+            # Chama o método de entrega que você já tem no quest_system
+            quest.entregar(jogador) 
 
-        # 3. Quest já aceita, mas em andamento (Progresso)
-        if quest.aceita:
-            fala = quest.dialogos.get("progresso", f"Como vai a missão? ({quest.progresso}/{quest.quantidade})")
-            print(f"{self.nome}: {fala}")
-            return
+        # 3. Está no meio da missão
+        elif quest.aceita:
+            msg = quest.dialogos.get("progresso", "Como vai a missão?")
+            print(f"{self.nome}: {msg} ({quest.progresso}/{quest.quantidade})")
 
-        # 4. Quest disponível (Início)
-        fala_inicio = quest.dialogos.get("inicio", quest.descricao)
-        print(f"{self.nome}: {fala_inicio}")
-        
-        aceitar = input("Aceitar a quest? (s/n): ").lower()
-        if aceitar == "s":
-            quest.aceita = True
-            print(f"📜 Quest '{quest.id}' aceita!")
+        # 4. Primeira vez falando (Oferecer a quest)
         else:
-            print(f"{self.nome}: Talvez outra hora.")
+            msg = quest.dialogos.get("inicio", quest.descricao)
+            print(f"{self.nome}: {msg}")
+            
+            confirmar = input("Aceitar missão? (s/n): ").lower()
+            if confirmar == 's':
+                quest.aceita = True
+                print("📜 Missão aceita!")
+            else:
+                print(f"{self.nome}: Entendo. Volte se mudar de ideia.")
