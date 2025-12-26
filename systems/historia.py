@@ -1,26 +1,62 @@
-from core.inimigo import Inimigo
-from systems.batalha import batalha
-from persistence.save import salvar_jogo
+import time
 
-def modo_historia(jogador, progresso):
-    inimigos = [
-        Inimigo("Goblin", 50, 10, 4, 30),
-        Inimigo("Orc Brutal", 90, 15, 6, 50),
-        Inimigo("Lobo Sombrio", 80, 18, 7, 60),
-        Inimigo("Dragão Ancião - Fase 1", 150, 25, 10, 100),
-        Inimigo("Dragão Ancião - Fase 2", 220, 30, 14, 200),
-    ]
 
-    for i in range(progresso, len(inimigos)):
-        venceu = batalha(jogador, inimigos[i])
+def escrever(texto, delay=0.02):
+    for c in texto:
+        print(c, end="", flush=True)
+        time.sleep(delay)
+    print("\n")
 
-        if not venceu:
-            salvar_jogo(jogador, i)
-            print("💀 Você foi derrotado...")
-            return
 
-        jogador.xp += inimigos[i].xp_drop
-        print(f"⭐ Ganhou {inimigos[i].xp_drop} XP!")
-        salvar_jogo(jogador, i + 1)
+# =========================
+# INTRODUÇÃO
+# =========================
+def introducao():
+    escrever(
+        "Em um mundo ameaçado por forças antigas,\n"
+        "criaturas emergem das sombras.\n"
+    )
+    escrever(
+        "Poucos têm coragem de enfrentá-las.\n"
+        "Hoje, um novo herói surge.\n"
+    )
 
-    print("🏆 Você concluiu a história!")
+
+# =========================
+# EVENTOS DE HISTÓRIA
+# =========================
+def encontro_goblin():
+    escrever("Um Goblin salta das sombras, brandindo uma adaga enferrujada!")
+
+
+def encontro_orc():
+    escrever("O chão treme.\nUm Orc Brutal bloqueia seu caminho!")
+
+
+def encontro_lobo():
+    escrever("Olhos brilhantes surgem entre as árvores.\nUm Lobo Sombrio ataca!")
+
+
+def chegada_montanha():
+    escrever(
+        "O ar fica pesado.\n"
+        "Um rugido ecoa pelos céus.\n"
+        "O Dragão Ancião sabe que você chegou.\n"
+    )
+
+
+def final_vitoria():
+    escrever(
+        "Com o último golpe, o Dragão cai.\n"
+        "A paz retorna ao mundo.\n"
+        "Seu nome será lembrado.\n"
+        "FIM.\n"
+    )
+
+
+def final_derrota():
+    escrever(
+        "Você caiu.\n"
+        "O mundo permanece em trevas.\n"
+        "FIM.\n"
+    )

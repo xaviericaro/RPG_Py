@@ -1,44 +1,74 @@
 import json
 import os
+
 from core.jogador import Guerreiro, Mago, Arqueiro
 
 SAVE_FILE = None
 
-def definir_save(path):
+
+# =========================
+# DEFINIR SLOT DE SAVE
+# =========================
+def definir_save(caminho):
     global SAVE_FILE
-    SAVE_FILE = path
-    os.makedirs("saves", exist_ok=True)
+    SAVE_FILE = caminho
 
-def salvar_jogo(jogador, area):
+    pasta = os.path.dirname(caminho)
+    if pasta and not os.path.exists(pasta):
+        os.makedirs(pasta)
+
+
+# =========================
+# SALVAR JOGO
+# =========================
+def salvar_jogo(jogador, area_atual):
+    if not SAVE_FILE:
+        return
+
     dados = {
-    "nome": jogador.nome,
-    "classe": jogador.__class__.__name__,
-    "nivel": jogador.nivel,
-    "xp": jogador.xp,
-    "vida": jogador.vida,
-    "vida_max": jogador.vida_max,
-    "mana": jogador.mana,
-    "mana_max": jogador.mana_max,
-    "status": jogador.status,
-    "inventario": jogador.inventario,
-    "ouro": jogador.ouro,
-    "quests": {
-    qid: {
-        "progresso": q.progresso,
-        "aceita": q.aceita,
-        "concluida": q.concluida,
-        "entregue": q.entregue
-    } for qid, q in jogador.quests.items()
-}
+        "classe": jogador.__class__.__name__,
+        "area": area_atual,
+        "jogador": {
+            "nome": jogador.nome,
+            "nivel": jogador.nivel,
+            "xp": jogador.xp,
+            "xp_para_proximo": jogador.xp_para_proximo,
+            "vida": jogador.vida,
+            "vida_max": jogador.vida_max,
+            "mana": jogador.mana,
+            "mana_max": jogador.mana_max,
+            "ataque": jogador.ataque,
+            "defesa": jogador.defesa,
+            "ouro": jogador.ouro,
+            "inventario": jogador.inventario,
+            "arma": jogador.arma,
+            "armadura": jogador.armadura,
+        },
+        "quests": {},
+    }
 
-}
-    
-    with open(SAVE_FILE, "w") as f:
-        json.dump(dados, f, indent=4)
+    # salvar estado das quests
+    for qid, quest in jogador.quests.items():
+        dados["quests"][qid] = {
+            "progresso": quest.progresso,
+            "concluida": quest.concluida,
+            "entregue": getattr(quest, "entregue", False),
+        }
+
+    with open(SAVE_FILE, "w", encoding="utf-8") as f:
+        json.dump(dados, f, indent=4, ensure_ascii=False)
+
+    print("💾 Jogo salvo com sucesso!")
 
 
+# =========================
+# CARREGAR JOGO
+# =========================
 def carregar_jogo():
-    with open(SAVE_FILE) as f:
+    if not SAVE_FILE or not os.path.exists(SAVE_FILE):
+        raise FileNotFoundError("Save não encontrado.")
+
+    with open(SAVE_FILE, "r", encoding="utf-8") as f:
         dados = json.load(f)
 
     classes = {
@@ -47,40 +77,33 @@ def carregar_jogo():
         "Arqueiro": Arqueiro,
     }
 
-    # cria jogador pela classe
-    jogador = classes[dados["classe"]](dados["nome"])
+    classe = dados["classe"]
+    info = dados["jogador"]
 
-    # restaura atributos básicos
-    jogador.nivel = dados["nivel"]
-    jogador.xp = dados["xp"]
-    jogador.vida_max = dados.get("vida_max", jogador.vida_max)
-    jogador.vida = min(dados["vida"], jogador.vida_max)
+    jogador = classes[classe](info["nome"])
 
-    jogador.ouro = dados["ouro"]
-    jogador.inventario = dados["inventario"]
+    # restaurar atributos básicos
+    jogador.nivel = info["nivel"]
+    jogador.xp = info["xp"]
+    jogador.xp_para_proximo = info["xp_para_proximo"]
 
-    # quests
+    jogador.vida_max = info["vida_max"]
+    jogador.vida = min(info["vida"], jogador.vida_max)
+
+    jogador.mana_max = info["mana_max"]
+    jogador.mana = min(info["mana"], jogador.mana_max)
+
+    jogador.ataque = info["ataque"]
+    jogador.defesa = info["defesa"]
+
+    jogador.ouro = info["ouro"]
+    jogador.inventario = info["inventario"]
+    jogador.arma = info["arma"]
+    jogador.armadura = info["armadura"]
+
+    # quests serão recriadas fora (quest_system)
     jogador.quests = {}
 
-    if "quests" in dados:
-        from systems.npc import Quest
-
-        for qid, qdados in dados["quests"].items():
-            if qid == "limpar_floresta":
-                quest = Quest(
-                    quest_id="limpar_floresta",
-                    descricao="Derrote 2 inimigos na Floresta e volte até mim.",
-                    area_objetivo="Floresta",
-                    quantidade=2,
-                    recompensa_ouro=50,
-                )
-
-                quest.progresso = qdados.get("progresso", 0)
-                quest.aceita = qdados.get("aceita", False)
-                quest.concluida = qdados.get("concluida", False)
-                quest.entregue = qdados.get("entregue", False)
-
-                jogador.quests[qid] = quest
-
     area_atual = dados.get("area", "Vilarejo")
+
     return jogador, area_atual

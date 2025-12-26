@@ -24,6 +24,10 @@ definir_save(save_path)
 # =========================
 if opcao == "1" and os.path.exists(save_path):
     jogador, area_atual = carregar_jogo()
+
+    # 🔹 carrega quests do JSON
+    jogador.quests = carregar_quests()
+
     print(f"\n🔄 Bem-vindo de volta, {jogador.nome}!")
     print(f"📍 Última localização: {area_atual}")
 
@@ -50,15 +54,17 @@ else:
         print("Classe inválida!")
         exit()
 
+    # inventário inicial
     jogador.inventario = [
         {"nome": "Poção de Cura", "tipo": "consumivel", "cura": 30},
         {"nome": "Espada Enferrujada", "tipo": "arma", "ataque": 3},
     ]
 
+    # 🔹 carrega quests do JSON
+    jogador.quests = carregar_quests()
+
     area_atual = "Vilarejo"
     salvar_jogo(jogador, area_atual)
-
-jogador.quests = carregar_quests()
 
 # =========================
 # INICIAR MAPA

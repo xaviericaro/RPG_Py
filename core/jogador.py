@@ -1,45 +1,83 @@
 import random
 from core.personagem import Personagem
 
+
 class Guerreiro(Personagem):
     def __init__(self, nome):
-        super().__init__(nome, 120, 15, 10, 30)
+        super().__init__(
+            nome=nome,
+            vida=120,
+            ataque=15,
+            defesa=10,
+            mana=30,
+        )
 
     def habilidade(self, alvo):
-        if self.mana < 10:
-            print("Mana insuficiente!")
+        custo = 10
+        if self.mana < custo:
+            print("❌ Mana insuficiente!")
             return
-        self.mana -= 10
+
+        self.mana -= custo
+
         dano = random.randint(20, 30)
-        alvo.vida -= dano
+        dano_final = max(0, dano - alvo.defesa_total())
+        alvo.vida = max(0, alvo.vida - dano_final)
+
         alvo.status["sangramento"] = 2
-        print(f"💥 Golpe Brutal causou {dano}!")
+        print(f"💥 Golpe Brutal causou {dano_final} de dano!")
 
 
 class Mago(Personagem):
     def __init__(self, nome):
-        super().__init__(nome, 80, 12, 5, 80)
+        super().__init__(
+            nome=nome,
+            vida=80,
+            ataque=10,
+            defesa=5,
+            mana=60,
+        )
 
     def habilidade(self, alvo):
-        if self.mana < 15:
-            print("Mana insuficiente!")
+        custo = 15
+        if self.mana < custo:
+            print("❌ Mana insuficiente!")
             return
-        self.mana -= 15
-        dano = random.randint(30, 45)
-        alvo.vida -= dano
+
+        self.mana -= custo
+
+        dano = random.randint(25, 40)
+        dano_final = max(0, dano - alvo.defesa_total())
+        alvo.vida = max(0, alvo.vida - dano_final)
+
         alvo.status["veneno"] = 3
-        print(f"🔥 Bola de Fogo causou {dano}!")
+        print(f"🔥 Bola de Fogo causou {dano_final} de dano!")
 
 
 class Arqueiro(Personagem):
     def __init__(self, nome):
-        super().__init__(nome, 100, 14, 8, 40)
+        super().__init__(
+            nome=nome,
+            vida=100,
+            ataque=13,
+            defesa=7,
+            mana=40,
+        )
 
     def habilidade(self, alvo):
-        if self.mana < 8:
-            print("Mana insuficiente!")
+        custo = 12
+        if self.mana < custo:
+            print("❌ Mana insuficiente!")
             return
-        self.mana -= 8
-        dano = random.randint(25, 35)
-        alvo.vida -= dano
-        print(f"🏹 Flecha Precisa causou {dano}!")
+
+        self.mana -= custo
+
+        dano = random.randint(18, 28)
+        dano_final = max(0, dano - alvo.defesa_total())
+        alvo.vida = max(0, alvo.vida - dano_final)
+
+        if random.random() < 0.4:
+            alvo.status["sangramento"] = 3
+            print("🩸 O inimigo começou a sangrar!")
+
+        print(f"🏹 Tiro Preciso causou {dano_final} de dano!")

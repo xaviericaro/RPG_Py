@@ -1,62 +1,38 @@
-from systems.quest_system import Quest
-class Quest:
-    def __init__(self, quest_id, descricao, area_objetivo, quantidade, recompensa_ouro):
-        self.id = quest_id
-        self.descricao = descricao
-        self.area_objetivo = area_objetivo
-        self.quantidade = quantidade
-        self.progresso = 0
-        self.recompensa_ouro = recompensa_ouro
-        self.aceita = False
-        self.concluida = False
-        self.entregue = False
-
-    def registrar_evento(self, area):
-        if not self.aceita or self.concluida or self.entregue:
-            return
-
-
-        if area == self.area_objetivo:
-            self.progresso += 1
-            print(f"📜 Progresso da quest: {self.progresso}/{self.quantidade}")
-
-            if self.progresso >= self.quantidade:
-                self.concluida = True
-                print("✅ Quest concluída! Volte ao NPC.")
-
-
 class NPC:
-    def __init__(self, nome, quest_id):
+    def __init__(self, nome, quest_id=None):
         self.nome = nome
         self.quest_id = quest_id
 
     def falar(self, jogador):
-        # 🔐 proteção importante
-        if self.quest_id not in jogador.quests:
-            print("❓ Não tenho nenhuma missão para você agora.")
+        if not self.quest_id:
+            print(f"{self.nome}: Olá, viajante.")
             return
 
-        quest = jogador.quests[self.quest_id]
+        quest = jogador.quests.get(self.quest_id)
 
-        print(f"\n🧑 {self.nome}:")
-
-        if quest.entregue:
-            print("Obrigado novamente, herói.")
+        if not quest:
+            print(f"{self.nome}: Não tenho nada para você agora.")
             return
 
+        # Quest ainda não aceita
         if not quest.aceita:
-            print(quest.descricao)
-            if input("Aceitar quest? (s/n) ").lower() == "s":
+            print(f"{self.nome}: {quest.descricao}")
+            aceitar = input("Aceitar a quest? (s/n): ").lower()
+
+            if aceitar == "s":
                 quest.aceita = True
                 print("📜 Quest aceita!")
+            else:
+                print(f"{self.nome}: Talvez outra hora.")
             return
 
-        if quest.concluida:
-            print("🎉 Excelente trabalho!")
-            jogador.ouro += quest.recompensa["ouro"]
-            jogador.ganhar_xp(quest.recompensa["xp"])
+        # Quest concluída mas não entregue
+        if quest.concluida and not quest.entregue:
+            print(f"{self.nome}: Excelente trabalho!")
+            jogador.ouro += quest.recompensa_ouro
             quest.entregue = True
+            print(f"💰 Você recebeu {quest.recompensa_ouro} ouro!")
             return
 
-        print("Continue sua missão.")
-
+        # Quest em andamento
+        print(f"{self.nome}: Continue sua missão.")

@@ -5,6 +5,7 @@ def batalha(jogador, inimigo):
     print(f"\n⚔️ Um {inimigo.nome} apareceu!")
 
     while jogador.esta_vivo() and inimigo.esta_vivo():
+        # aplica efeitos (sangramento etc)
         jogador.aplicar_status()
 
         print(
@@ -12,10 +13,10 @@ def batalha(jogador, inimigo):
             f"❤️ {jogador.vida}/{jogador.vida_max} | "
             f"🔮 {jogador.mana}/{jogador.mana_max} | "
             f"⭐ Nv {jogador.nivel} | "
-            f"🪙 Ouro: {jogador.ouro}"
+            f"🪙 Ouro {jogador.ouro}"
         )
 
-        print(f"{inimigo.nome} | HP: {inimigo.vida}")
+        print(f"{inimigo.nome} HP: {inimigo.vida}")
 
         jogador.defendendo = False
 
@@ -33,11 +34,6 @@ def batalha(jogador, inimigo):
 
         escolha = int(entrada)
 
-        if escolha < 1 or escolha > 4:
-            print("❌ Opção inválida.")
-            continue
-
-        # AÇÕES DO JOGADOR
         if escolha == 1:
             jogador.ataque_normal(inimigo)
 
@@ -46,13 +42,17 @@ def batalha(jogador, inimigo):
 
         elif escolha == 3:
             jogador.defendendo = True
-            print("🛡️ Você está se defendendo!")
+            print("🛡️ Você se preparou para defender.")
 
         elif escolha == 4:
             usar_item(jogador)
-            continue  # usar item não consome turno do inimigo
+            continue
 
-        # TURNO DO INIMIGO
+        else:
+            print("❌ Opção inválida.")
+            continue
+
+        # turno do inimigo
         if inimigo.esta_vivo():
             inimigo.atacar(jogador)
 

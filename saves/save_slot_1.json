@@ -1,31 +1,36 @@
 {
-    "nome": "Xavier",
     "classe": "Guerreiro",
-    "nivel": 7,
-    "xp": 65,
-    "vida": 109,
-    "vida_max": 180,
-    "mana": 30,
-    "mana_max": 30,
-    "status": {},
-    "inventario": [
-        {
-            "nome": "Espada Enferrujada",
-            "tipo": "arma",
-            "ataque": 3
-        }
-    ],
-    "ouro": 250,
+    "area": "Vilarejo",
+    "jogador": {
+        "nome": "de",
+        "nivel": 1,
+        "xp": 60,
+        "xp_para_proximo": 100,
+        "vida": 120,
+        "vida_max": 120,
+        "mana": 30,
+        "mana_max": 30,
+        "ataque": 15,
+        "defesa": 10,
+        "ouro": 25,
+        "inventario": [
+            {
+                "nome": "Espada Enferrujada",
+                "tipo": "arma",
+                "ataque": 3
+            }
+        ],
+        "arma": null,
+        "armadura": null
+    },
     "quests": {
         "limpar_floresta": {
             "progresso": 0,
-            "aceita": false,
             "concluida": false,
             "entregue": false
         },
-        "derrotar_orc": {
+        "dragao_ancião": {
             "progresso": 0,
-            "aceita": false,
             "concluida": false,
             "entregue": false
         }
