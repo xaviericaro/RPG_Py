@@ -1,21 +1,31 @@
 import json
 import os
+import re 
 
 from core.jogador import Guerreiro, Mago, Arqueiro
 
 SAVE_FILE = None
-
 
 # =========================
 # DEFINIR SLOT DE SAVE
 # =========================
 def definir_save(caminho):
     global SAVE_FILE
-    SAVE_FILE = caminho
+    
+    caminho_limpo = re.sub(r'[&<>|]', '', caminho)
+    
+    if not caminho_limpo.startswith("saves"):
+        caminho_limpo = os.path.join("saves", os.path.basename(caminho_limpo))
+    
+    SAVE_FILE = caminho_limpo
 
-    pasta = os.path.dirname(caminho)
+    pasta = os.path.dirname(SAVE_FILE)
     if pasta and not os.path.exists(pasta):
-        os.makedirs(pasta)
+        try:
+            os.makedirs(pasta, exist_ok=True)
+        except OSError:
+            SAVE_FILE = os.path.basename(SAVE_FILE)
+
 
 
 # =========================

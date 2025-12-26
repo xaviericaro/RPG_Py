@@ -1,19 +1,19 @@
 {
     "classe": "Guerreiro",
-    "area": "Vilarejo",
+    "area": "Montanha",
     "jogador": {
         "nome": "Vick",
         "nivel": 5,
-        "pontos_disponiveis": 5,
-        "xp": 308,
+        "pontos_disponiveis": 0,
+        "xp": 448,
         "xp_para_proximo": 505,
         "vida": 170,
         "vida_max": 170,
-        "mana": 60,
-        "mana_max": 60,
-        "ataque": 27,
-        "defesa": 20,
-        "ouro": 430,
+        "mana": 70,
+        "mana_max": 70,
+        "ataque": 31,
+        "defesa": 24,
+        "ouro": 515,
         "inventario": [
             {
                 "nome": "Poção de Cura",
@@ -34,6 +34,11 @@
                 "nome": "Pele de Lobo",
                 "tipo": "material",
                 "valor": 10
+            },
+            {
+                "tipo": "material",
+                "valor": 10,
+                "nome": "Pele de Lobo"
             }
         ],
         "arma": {
@@ -45,9 +50,9 @@
     },
     "quests": {
         "limpar_floresta": {
-            "progresso": 0,
-            "concluida": false,
-            "entregue": false
+            "progresso": 2,
+            "concluida": true,
+            "entregue": true
         },
         "dragao_ancião": {
             "progresso": 0,
