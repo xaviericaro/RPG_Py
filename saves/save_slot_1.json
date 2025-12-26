@@ -1,19 +1,27 @@
 {
     "classe": "Guerreiro",
-    "area": "Floresta",
+    "area": "Montanha",
     "jogador": {
         "nome": "de",
-        "nivel": 2,
+        "nivel": 3,
+        "pontos_disponiveis": 0,
         "xp": 140,
-        "xp_para_proximo": 150,
-        "vida": 130,
-        "vida_max": 130,
-        "mana": 35,
-        "mana_max": 35,
-        "ataque": 17,
-        "defesa": 12,
-        "ouro": 185,
-        "inventario": [],
+        "xp_para_proximo": 225,
+        "vida": 142,
+        "vida_max": 150,
+        "mana": 40,
+        "mana_max": 40,
+        "ataque": 25,
+        "defesa": 16,
+        "ouro": 235,
+        "inventario": [
+            {
+                "nome": "Espada de Ferro",
+                "tipo": "arma",
+                "ataque": 6,
+                "preco": 50
+            }
+        ],
         "arma": {
             "nome": "Espada Enferrujada",
             "tipo": "arma",

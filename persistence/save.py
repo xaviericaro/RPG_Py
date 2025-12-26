@@ -31,6 +31,7 @@ def salvar_jogo(jogador, area_atual):
         "jogador": {
             "nome": jogador.nome,
             "nivel": jogador.nivel,
+            "pontos_disponiveis": jogador.pontos_disponiveis,
             "xp": jogador.xp,
             "xp_para_proximo": jogador.xp_para_proximo,
             "vida": jogador.vida,
@@ -86,6 +87,7 @@ def carregar_jogo():
 
     # restaurar atributos básicos
     jogador.nivel = info["nivel"]
+    jogador.pontos_disponiveis = info.get("pontos_disponiveis", 0)
     jogador.xp = info["xp"]
     jogador.xp_para_proximo = info["xp_para_proximo"]
 

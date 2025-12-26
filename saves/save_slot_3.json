@@ -3,16 +3,17 @@
     "area": "Floresta",
     "jogador": {
         "nome": "Vick",
-        "nivel": 3,
-        "xp": 190,
-        "xp_para_proximo": 225,
-        "vida": 140,
-        "vida_max": 140,
-        "mana": 40,
-        "mana_max": 40,
-        "ataque": 19,
-        "defesa": 14,
-        "ouro": 150,
+        "nivel": 4,
+        "pontos_disponiveis": 0,
+        "xp": 165,
+        "xp_para_proximo": 337,
+        "vida": 160,
+        "vida_max": 160,
+        "mana": 55,
+        "mana_max": 55,
+        "ataque": 25,
+        "defesa": 18,
+        "ouro": 255,
         "inventario": [
             {
                 "nome": "Poção de Cura",
@@ -29,9 +30,9 @@
     },
     "quests": {
         "limpar_floresta": {
-            "progresso": 0,
-            "concluida": false,
-            "entregue": false
+            "progresso": 2,
+            "concluida": true,
+            "entregue": true
         },
         "dragao_ancião": {
             "progresso": 0,

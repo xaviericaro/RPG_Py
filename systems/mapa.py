@@ -5,6 +5,56 @@ from persistence.save import salvar_jogo
 from systems.loja import loja
 from systems.npc import NPC
 
+# =========================
+# FUNÇÕES DE APOIO
+# =========================
+
+def menu_atributos(jogador):
+    """Interface para o jogador distribuir pontos ganhos ao subir de nível."""
+    while jogador.pontos_disponiveis > 0:
+        print(f"\n" + "="*35)
+        print(f"✨ PONTOS DISPONÍVEIS: {jogador.pontos_disponiveis}")
+        print(f"1 - Força (+2 Ataque) [Atual: {jogador.ataque}]")
+        print(f"2 - Agilidade (+2 Defesa) [Atual: {jogador.defesa}]")
+        print(f"3 - Vitalidade (+10 HP Máx) [Atual: {jogador.vida_max}]")
+        print(f"4 - Inteligência (+10 Mana Máx) [Atual: {jogador.mana_max}]")
+        print(f"0 - Sair")
+        print("="*35)
+        
+        escolha = input("Escolha onde investir: ")
+
+        if escolha == "1":
+            jogador.ataque += 2
+            jogador.pontos_disponiveis -= 1
+        elif escolha == "2":
+            jogador.defesa += 2
+            jogador.pontos_disponiveis -= 1
+        elif escolha == "3":
+            jogador.vida_max += 10
+            jogador.vida += 10 
+            jogador.pontos_disponiveis -= 1
+        elif escolha == "4":
+            jogador.mana_max += 10
+            jogador.mana += 10
+            jogador.pontos_disponiveis -= 1
+        elif escolha == "0":
+            break
+        else:
+            print("❌ Opção inválida!")
+    
+    if jogador.pontos_disponiveis == 0:
+        print("\n✅ Todos os pontos foram distribuídos!")
+
+def inimigo_aleatorio(area):
+    if area == "Floresta":
+        return random.choice([
+            Inimigo("Goblin", 50, 10, 4, 30, 10),
+            Inimigo("Orc Brutal", 70, 15, 6, 80, 15),
+            Inimigo("Lobo Sombrio", 80, 18, 7, 60, 20),
+        ])
+    if area == "Montanha":
+        return Inimigo("Dragão Ancião", 250, 35, 15, 300, 200)
+    return None
 
 # =========================
 # MAPA DO JOGO
@@ -16,13 +66,11 @@ MAPA = {
             "Falar com o Ancião",
             "Ir à Loja",
             "Descansar",
+            "Distribuir Pontos",
             "Ir para a Floresta",
         ],
         "destinos": [
-            None,
-            None,
-            None,
-            "Floresta",
+            None, None, None, None, "Floresta"
         ],
     },
     "Floresta": {
@@ -33,9 +81,7 @@ MAPA = {
             "Seguir para a Montanha",
         ],
         "destinos": [
-            None,
-            "Vilarejo",
-            "Montanha",
+            None, "Vilarejo", "Montanha"
         ],
     },
     "Montanha": {
@@ -45,40 +91,12 @@ MAPA = {
             "Voltar para a Floresta",
         ],
         "destinos": [
-            None,
-            "Floresta",
+            None, "Floresta"
         ],
     },
 }
 
-
-# =========================
-# NPCs
-# =========================
-npc_vilarejo = NPC(
-    nome="Ancião do Vilarejo",
-    quest_id="limpar_floresta",
-)
-
-
-# =========================
-# INIMIGOS
-# =========================
-def inimigo_aleatorio(area):
-    if area == "Floresta":
-        return random.choice(
-            [
-                Inimigo("Goblin", 50, 10, 4, 30, 10),
-                Inimigo("Orc Brutal", 70, 15, 6, 80, 15),
-                Inimigo("Lobo Sombrio", 80, 18, 7, 60, 20),
-            ]
-        )
-
-    if area == "Montanha":
-        return Inimigo("Dragão Ancião", 250, 35, 15, 300, 200)
-
-    return None
-
+npc_vilarejo = NPC(nome="Ancião do Vilarejo", quest_id="limpar_floresta")
 
 # =========================
 # LOOP DO MAPA
@@ -87,131 +105,100 @@ def loop_mapa(jogador, area_atual):
     while True:
         area = MAPA[area_atual]
 
-        print(f"\n📍 {area_atual}")
-        print(area["descricao"])
+        print(f"\n📍 {area_atual.upper()}")
+        print(f"📜 {area['descricao']}")
         print(
-            f"❤️ {jogador.vida}/{jogador.vida_max} | "
-            f"🔮 {jogador.mana}/{jogador.mana_max} | "
-            f"⭐ Nv {jogador.nivel} | "
-            f"XP {jogador.xp}/{jogador.xp_para_proximo} | "
-            f"🪙 Ouro {jogador.ouro}"
+            f"❤️  HP: {jogador.vida}/{jogador.vida_max} | "
+            f"🔮 MP: {jogador.mana}/{jogador.mana_max} | "
+            f"⭐ NV: {jogador.nivel} | "
+            f"🪙 Ouro: {jogador.ouro}"
         )
 
         for i, opcao in enumerate(area["opcoes"], start=1):
             print(f"{i} - {opcao}")
 
-        entrada = input(">>> ")
-
+        entrada = input("\nO que deseja fazer? >>> ")
         if not entrada.isdigit():
             print("❌ Digite um número válido.")
             continue
 
-        escolha = int(entrada) - 1
+        escolha_idx = int(entrada) - 1
 
-        if escolha < 0 or escolha >= len(area["opcoes"]):
+        if escolha_idx < 0 or escolha_idx >= len(area["opcoes"]):
             print("❌ Opção inválida.")
             continue
 
-        opcao_escolhida = area["opcoes"][escolha]
+        opcao_texto = area["opcoes"][escolha_idx]
+        destino = area["destinos"][escolha_idx]
 
-        # =========================
-        # VILAREJO
-        # =========================
-        if area_atual == "Vilarejo":
-            if opcao_escolhida == "Falar com o Ancião":
-                npc_vilarejo.falar(jogador)
-                salvar_jogo(jogador, area_atual)
-                continue
+        # --- AÇÕES ESPECIAIS (NÃO MUDAM DE ÁREA) ---
+        if opcao_texto == "Falar com o Ancião":
+            npc_vilarejo.falar(jogador)
+            salvar_jogo(jogador, area_atual)
+            continue
 
-            if opcao_escolhida == "Ir à Loja":
-                loja(jogador)
-                salvar_jogo(jogador, area_atual)
-                continue
+        elif opcao_texto == "Ir à Loja":
+            loja(jogador)
+            salvar_jogo(jogador, area_atual)
+            continue
 
-            if opcao_escolhida == "Descansar":
-                jogador.vida = jogador.vida_max
-                jogador.mana = jogador.mana_max
-                print("😴 Você descansou e recuperou tudo!")
-                salvar_jogo(jogador, area_atual)
-                continue
+        elif opcao_texto == "Descansar":
+            jogador.vida = jogador.vida_max
+            jogador.mana = jogador.mana_max
+            print("\n😴 Você descansou e recuperou suas energias!")
+            salvar_jogo(jogador, area_atual)
+            continue
 
-        # =========================
-        # EXPLORAR / BATALHA
-        # =========================
-        if opcao_escolhida == "Explorar":
+        elif opcao_texto == "Distribuir Pontos":
+            menu_atributos(jogador)
+            salvar_jogo(jogador, area_atual)
+            continue
+
+        elif opcao_texto == "Explorar":
             inimigo = inimigo_aleatorio(area_atual)
-
-            if not inimigo:
-                print("Nada aconteceu...")
-                continue
-
-            # história antes da batalha
+            
+            # Introdução da História
             from systems.historia import encontro_goblin, encontro_orc, encontro_lobo
-
-            if inimigo.nome == "Goblin":
-                encontro_goblin()
-            elif inimigo.nome == "Orc Brutal":
-                encontro_orc()
-            elif inimigo.nome == "Lobo Sombrio":
-                encontro_lobo()
-            else:
-                print(f"\n⚔️ Um {inimigo.nome} bloqueia seu caminho!")
+            if inimigo.nome == "Goblin": encontro_goblin()
+            elif inimigo.nome == "Orc Brutal": encontro_orc()
+            elif inimigo.nome == "Lobo Sombrio": encontro_lobo()
 
             venceu = batalha(jogador, inimigo)
-
             if not venceu:
-                print("💀 Você morreu...")
-                salvar_jogo(jogador, area_atual)
+                print("💀 Game Over...")
                 return
 
             jogador.ganhar_xp(inimigo.xp_drop)
             jogador.ouro += inimigo.ouro_drop
-
-            print(f"⭐ Ganhou {inimigo.xp_drop} XP!")
-            print(f"🪙 Ganhou {inimigo.ouro_drop} ouro!")
-
+            
+            # Registrar progresso de quests
             for quest in jogador.quests.values():
                 quest.registrar_evento(area_atual)
 
             salvar_jogo(jogador, area_atual)
             continue
 
-        # =========================
-        # DRAGÃO FINAL
-        # =========================
-        if area_atual == "Montanha" and opcao_escolhida == "Enfrentar o Dragão":
+        elif opcao_texto == "Enfrentar o Dragão":
             from systems.historia import chegada_montanha, final_vitoria
-
             chegada_montanha()
-
             dragao = inimigo_aleatorio("Montanha")
-            venceu = batalha(jogador, dragao)
-
-            if venceu:
+            if batalha(jogador, dragao):
                 final_vitoria()
+                return
             else:
-                print("💀 O Dragão foi forte demais para você...")
+                print("💀 O Dragão derrotou você.")
+                return
 
-            salvar_jogo(jogador, area_atual)
-            return
-
-        # =========================
-        # MUDAR DE ÁREA
-        # =========================
-        destino = area["destinos"][escolha]
+        # --- MUDANÇA DE ÁREA (DESTINOS) ---
         if destino:
             if destino == "Montanha":
-                quest_floresta = jogador.quests.get("limpar_floresta")
-                
-                # Se a quest não existe ou não foi entregue, bloqueia
-                if not quest_floresta or not quest_floresta.entregue:
-                    print("\n" + "!"*30)
-                    print("🚫 CAMINHO BLOQUEADO!")
-                    print("O guarda da fronteira diz: 'Somente heróis autorizados pelo Ancião passam para a Montanha!'")
-                    print("!"*30)
-                    input("\nPressione Enter para voltar...")
+                quest_f = jogador.quests.get("limpar_floresta")
+                if not quest_f or not quest_f.entregue:
+                    print("\n🚫 O caminho para a Montanha está selado!")
+                    print("Dica: Complete a quest do Ancião primeiro.")
+                    input("Pressione Enter...")
                     continue
 
             area_atual = destino
-            print(f"\n✈️ Viajando para {area_atual}...")
+            print(f"\n✈️  Viajando para {area_atual}...")
             salvar_jogo(jogador, area_atual)

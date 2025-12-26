@@ -19,7 +19,8 @@ class Personagem:
         self.nivel = 1
         self.xp = 0
         self.xp_para_proximo = 100
-
+        self.pontos_disponiveis = 0
+        
         self.inventario = []
         self.arma = None
         self.armadura = None
@@ -123,6 +124,8 @@ class Personagem:
         self.nivel += 1
         self.xp_para_proximo = int(self.xp_para_proximo * 1.5)
 
+        self.pontos_disponiveis += 5
+
         self.vida_max += 10
         self.ataque += 2
         self.defesa += 2
@@ -131,9 +134,8 @@ class Personagem:
         self.vida = self.vida_max
         self.mana = self.mana_max
 
-        print(f"\n⬆️ {self.nome} subiu para o nível {self.nivel}!")
-        print("❤️ Vida +10 | ⚔️ Ataque +2 | 🛡️ Defesa +2 | 🔮 Mana +5\n")
-
+        print(f"\n✨ NÍVEL UP! Você agora está no nível {self.nivel}!")
+        print(f"🎁 Você ganhou 5 pontos de atributo! Total: {self.pontos_disponiveis}")
     # =========================
     # UTIL
     # =========================
