@@ -1,46 +1,44 @@
 # data/database.py
 
 ITENS = {
-    "espada_ferro": {
-        "nome": "Espada de Ferro",
-        "tipo": "arma",
-        "ataque": 15,
-        "valor": 100
+    "Minério de Ferro": {"tipo": "material", "valor": 15},
+    "Pele de Lobo": {"tipo": "material", "valor": 10},
+    "Tecido Rasgado": {"tipo": "material", "valor": 5},
+    "Escama de Dragão": {"tipo": "material", "valor": 100},
+    
+    "Espada de Ferro": {
+        "tipo": "arma", 
+        "ataque": 15, 
+        "valor": 100, 
+        "durabilidade": 100
     },
-    "armadura_couro": {
-        "nome": "Armadura de Couro",
-        "tipo": "armadura",
-        "defesa": 10,
-        "valor": 80
-    },
-    "pocao_vida": {
-        "nome": "Poção de Vida",
-        "tipo": "consumivel",
-        "cura": 20,
-        "valor": 25
-    }
-}
-
-INIMIGOS = {
-    "goblin": {
-        "nome": "Goblin",
-        "hp": 50, "atk": 10, "def": 4, "xp": 30, "ouro": 10,
-        "drops": ["tecido_rasgado"]
-    },
-    "orc": {
-        "nome": "Orc Brutal",
-        "hp": 70, "atk": 15, "def": 6, "xp": 80, "ouro": 15,
-        "drops": ["minerio_ferro"]
+    "Armadura de Couro": {
+        "tipo": "armadura", 
+        "defesa": 10, 
+        "valor": 80, 
+        "durabilidade": 100
     }
 }
 
 RECEITAS = {
-    "espada_ferro": {
+    "Espada de Ferro": {
         "materiais": {"Minério de Ferro": 3},
         "custo_ouro": 50
     },
-    "armadura_couro": {
+    "Armadura de Couro": {
         "materiais": {"Pele de Lobo": 4},
         "custo_ouro": 40
     }
+}
+
+# Aqui você define os inimigos e o que eles podem dropar (pelas chaves do ITENS)
+LISTA_INIMIGOS = {
+    "Floresta": [
+        {"nome": "Goblin", "hp": 50, "atk": 10, "def": 4, "xp": 30, "ouro": 10, "drops": ["Tecido Rasgado"]},
+        {"nome": "Orc Brutal", "hp": 70, "atk": 15, "def": 6, "xp": 80, "ouro": 15, "drops": ["Minério de Ferro"]},
+        {"nome": "Lobo Sombrio", "hp": 80, "atk": 18, "def": 7, "xp": 60, "ouro": 20, "drops": ["Pele de Lobo"]}
+    ],
+    "Montanha": [
+        {"nome": "Dragão Ancião", "hp": 250, "atk": 35, "def": 15, "xp": 300, "ouro": 200, "drops": ["Escama de Dragão"]}
+    ]
 }

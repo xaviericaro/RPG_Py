@@ -48,7 +48,6 @@ class Personagem:
     # EQUIPAMENTOS (Troca inteligente)
     # =========================
     def equipar_arma(self, nova_arma):
-        # Adiciona durabilidade se o item não tiver
         if "durabilidade" not in nova_arma:
             nova_arma["durabilidade"] = 100 # 100%
             
@@ -73,7 +72,6 @@ class Personagem:
         self.armadura = nova_armadura
         print(f"🛡️ {nova_armadura['nome']} equipada! (+{nova_armadura.get('defesa', 0)} DEF)")
 
-    # (Mantenha os métodos aplicar_status, mostrar_quests, ganhar_xp e subir_nivel como estão)
     def aplicar_status(self):
         for efeito in list(self.status):
             self.status[efeito] -= 1

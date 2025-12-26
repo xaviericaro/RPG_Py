@@ -4,6 +4,7 @@ from systems.batalha import batalha
 from persistence.save import salvar_jogo
 from systems.loja import loja
 from systems.npc import NPC
+from data.database import ITENS, RECEITAS, LISTA_INIMIGOS
 
 # =========================
 # FUNÇÕES DE APOIO
@@ -46,94 +47,76 @@ def menu_atributos(jogador):
         print("\n✅ Todos os pontos foram distribuídos!")
 
 def ferreiro(jogador):
-    """Sistema de Crafting: troca materiais por equipamentos."""
     while True:
-        print(f"\n" + "⚒️ " * 5 + " FORJA DO VILAREJO " + "⚒️ " * 5)
-        print(f"🪙 Ouro: {jogador.ouro}")
+        print(f"\n⚒️ FORJA DO VILAREJO | Ouro: {jogador.ouro}")
         
-        # Contagem de materiais para o jogador ver
-        materiais = {}
-        for item in jogador.inventario:
-            if item.get("tipo") == "material":
-                nome = item["nome"]
-                materiais[nome] = materiais.get(nome, 0) + 1
+        # Mostra as receitas do banco de dados automaticamente
+        opcoes_craft = list(RECEITAS.keys())
+        for i, nome_item in enumerate(opcoes_craft, start=1):
+            rec = RECEITAS[nome_item]
+            req_txt = " + ".join([f"{q}x {m}" for m, q in rec['materiais'].items()])
+            print(f"{i} - {nome_item} (Requer: {req_txt} e {rec['custo_ouro']}g)")
         
-        print(f"📦 Seus Materiais: {materiais if materiais else 'Vazio'}")
-        print("-" * 40)
-        print("1 - Espada de Ferro (Custo: 3x Minério de Ferro + 50 Ouro)")
-        print("2 - Armadura de Couro (Custo: 4x Pele de Lobo + 40 Ouro)")
         print("0 - Sair")
-        
         escolha = input("\nO que deseja fabricar? >>> ")
 
-        if escolha == "1":
-            qtd_minerio = materiais.get("Minério de Ferro", 0)
-            if qtd_minerio >= 3 and jogador.ouro >= 50:
-                # Pagamento
-                jogador.ouro -= 50
-                removidos = 0
-                idx = 0
-                while removidos < 3:
-                    if jogador.inventario[idx]["nome"] == "Minério de Ferro":
-                        jogador.inventario.pop(idx)
-                        removidos += 1
-                    else:
-                        idx += 1
-                
-                # Item novo
-                espada_ferro = {"nome": "Espada de Ferro", "tipo": "arma", "ataque": 15, "valor": 100}
-                jogador.inventario.append(espada_ferro)
-                print("\n🔥 O Ferreiro martela o ferro quente... TING! TING! TING!")
-                print("⚔️ Você recebeu uma [Espada de Ferro]!")
-            else:
-                print("\n❌ Materiais ou Ouro insuficientes!")
-        elif escolha == "0":
-            break
+        if escolha == "0": break
+        if not escolha.isdigit() or int(escolha) > len(opcoes_craft): continue
 
-            # --- LÓGICA DA ARMADURA DE COURO ---
-        elif escolha == "2":
-            qtd_pele = materiais.get("Pele de Lobo", 0)
-            if qtd_pele >= 4 and jogador.ouro >= 40:
-                # Pagamento
-                jogador.ouro -= 40
-                removidos = 0
-                idx = 0
-                while removidos < 4:
-                    if jogador.inventario[idx]["nome"] == "Pele de Lobo":
-                        jogador.inventario.pop(idx)
-                        removidos += 1
-                    else:
-                        idx += 1
-                
-                # Criando a Armadura
-                armadura_couro = {
-                    "nome": "Armadura de Couro", 
-                    "tipo": "armadura", 
-                    "defesa": 10, 
-                    "valor": 80
-                }
-                jogador.inventario.append(armadura_couro)
-                print("\n🧵 O Ferreiro costura as peles com maestria...")
-                print("🛡️ Você recebeu uma [Armadura de Couro]!")
-            else:
-                print("\n❌ Materiais ou Ouro insuficientes!")
+        nome_alvo = opcoes_craft[int(escolha) - 1]
+        receita = RECEITAS[nome_alvo]
+        
+        # Verifica se o jogador tem os materiais
+        materiais_jogador = {}
+        for it in jogador.inventario:
+            materiais_jogador[it["nome"]] = materiais_jogador.get(it["nome"], 0) + 1
+        
+        pode_fazer = True
+        if jogador.ouro < receita["custo_ouro"]: pode_fazer = False
+        for mat, qtd in receita["materiais"].items():
+            if materiais_jogador.get(mat, 0) < qtd:
+                pode_fazer = False
+                break
 
-        elif escolha == "0":
-            break
+        if pode_fazer:
+            # Paga ouro e remove materiais
+            jogador.ouro -= receita["custo_ouro"]
+            for mat, qtd in receita["materiais"].items():
+                removidos = 0
+                while removidos < qtd:
+                    for j, it_inv in enumerate(jogador.inventario):
+                        if it_inv["nome"] == mat:
+                            jogador.inventario.pop(j)
+                            removidos += 1
+                            break
+            
+            # Entrega o item baseado no banco ITENS
+            novo_item = ITENS[nome_alvo].copy()
+            novo_item["nome"] = nome_alvo
+            jogador.inventario.append(novo_item)
+            print(f"\n✅ Você fabricou: [{nome_alvo}]!")
+        else:
+            print("\n❌ Recursos insuficientes!")
+
 def inimigo_aleatorio(area):
-    if area == "Floresta":
-        return random.choice([
-            Inimigo("Goblin", 50, 10, 4, 30, 10, 
-                    [{"nome": "Tecido Rasgado", "tipo": "material", "valor": 5}]),
-            Inimigo("Orc Brutal", 70, 15, 6, 80, 15, 
-                    [{"nome": "Minério de Ferro", "tipo": "material", "valor": 15}]),
-            Inimigo("Lobo Sombrio", 80, 18, 7, 60, 20, 
-                    [{"nome": "Pele de Lobo", "tipo": "material", "valor": 10}]),
-        ])
-    if area == "Montanha":
-        return Inimigo("Dragão Ancião", 250, 35, 15, 300, 200, 
-                       [{"nome": "Escama de Dragão", "tipo": "material", "valor": 100}])
-    return None
+    dados_inimigo = random.choice(LISTA_INIMIGOS[area])
+    
+    # Criamos a lista de itens reais baseada nos nomes que estão no banco de dados
+    possiveis_drops = []
+    for nome_item in dados_inimigo["drops"]:
+        item_info = ITENS[nome_item].copy()
+        item_info["nome"] = nome_item
+        possiveis_drops.append(item_info)
+
+    return Inimigo(
+        dados_inimigo["nome"],
+        dados_inimigo["hp"],
+        dados_inimigo["atk"],
+        dados_inimigo["def"],
+        dados_inimigo["xp"],
+        dados_inimigo["ouro"],
+        possiveis_drops
+    )
 
 # =========================
 # MAPA DO JOGO
