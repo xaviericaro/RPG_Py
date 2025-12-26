@@ -46,57 +46,120 @@ def menu_atributos(jogador):
     if jogador.pontos_disponiveis == 0:
         print("\n✅ Todos os pontos foram distribuídos!")
 
+
+def executar_crafting(jogador):
+    """Lógica interna para fabricar itens."""
+    from data.database import ITENS, RECEITAS
+    
+    # 1. Mapear o que o jogador tem no inventário
+    materiais_jogador = {}
+    for it in jogador.inventario:
+        materiais_jogador[it["nome"]] = materiais_jogador.get(it["nome"], 0) + 1
+
+    # 2. Mostrar as receitas disponíveis
+    opcoes_craft = list(RECEITAS.keys())
+    print("\n--- OFICINA DE CRIAÇÃO ---")
+    for i, nome_item in enumerate(opcoes_craft, start=1):
+        rec = RECEITAS[nome_item]
+        # Formata o texto dos materiais necessários
+        req_txt = " + ".join([f"{q}x {m}" for m, q in rec['materiais'].items()])
+        print(f"{i} - {nome_item}")
+        print(f"    👉 Requer: {req_txt} | Custo: {rec['custo_ouro']}g")
+
+    print("0 - Voltar")
+    escolha = input("\nO que deseja fabricar? >>> ")
+
+    if escolha == "0" or not escolha.isdigit():
+        return
+
+    idx = int(escolha) - 1
+    if idx < 0 or idx >= len(opcoes_craft):
+        print("❌ Opção inválida.")
+        return
+
+    nome_alvo = opcoes_craft[idx]
+    receita = RECEITAS[nome_alvo]
+
+    # 3. Validar Ouro e Materiais
+    pode_fazer = True
+    if jogador.ouro < receita["custo_ouro"]:
+        pode_fazer = False
+    
+    for mat, qtd_necessaria in receita["materiais"].items():
+        if materiais_jogador.get(mat, 0) < qtd_necessaria:
+            pode_fazer = False
+            break
+
+    if pode_fazer:
+        # Pagar Ouro
+        jogador.ouro -= receita["custo_ouro"]
+        
+        # Remover Materiais do Inventário
+        for mat, qtd_necessaria in receita["materiais"].items():
+            removidos = 0
+            while removidos < qtd_necessaria:
+                for j, item_inv in enumerate(jogador.inventario):
+                    if item_inv["nome"] == mat:
+                        jogador.inventario.pop(j)
+                        removidos += 1
+                        break
+        
+        # Entregar o Item Novo (Cópia do Banco de Dados)
+        novo_item = ITENS[nome_alvo].copy()
+        novo_item["nome"] = nome_alvo
+        jogador.inventario.append(novo_item)
+        print(f"\n✅ Sucesso! Você fabricou: [{nome_alvo}]!")
+    else:
+        print("\n❌ Você não possui materiais ou ouro suficientes!")
+
 def ferreiro(jogador):
+    """Menu principal do Ferreiro."""
     while True:
-        print(f"\n⚒️ FORJA DO VILAREJO | Ouro: {jogador.ouro}")
-        
-        # Mostra as receitas do banco de dados automaticamente
-        opcoes_craft = list(RECEITAS.keys())
-        for i, nome_item in enumerate(opcoes_craft, start=1):
-            rec = RECEITAS[nome_item]
-            req_txt = " + ".join([f"{q}x {m}" for m, q in rec['materiais'].items()])
-            print(f"{i} - {nome_item} (Requer: {req_txt} e {rec['custo_ouro']}g)")
-        
+        print(f"\n" + "⚒️ " * 3 + " FORJA DO VILAREJO " + "⚒️ " * 3)
+        print(f"🪙 Seu Ouro: {jogador.ouro}")
+        print("-" * 30)
+        print("1 - Fabricar Itens (Crafting)")
+        print("2 - Reparar Equipamentos")
         print("0 - Sair")
-        escolha = input("\nO que deseja fabricar? >>> ")
-
-        if escolha == "0": break
-        if not escolha.isdigit() or int(escolha) > len(opcoes_craft): continue
-
-        nome_alvo = opcoes_craft[int(escolha) - 1]
-        receita = RECEITAS[nome_alvo]
         
-        # Verifica se o jogador tem os materiais
-        materiais_jogador = {}
-        for it in jogador.inventario:
-            materiais_jogador[it["nome"]] = materiais_jogador.get(it["nome"], 0) + 1
-        
-        pode_fazer = True
-        if jogador.ouro < receita["custo_ouro"]: pode_fazer = False
-        for mat, qtd in receita["materiais"].items():
-            if materiais_jogador.get(mat, 0) < qtd:
-                pode_fazer = False
-                break
+        escolha = input("\nO que deseja fazer? >>> ")
 
-        if pode_fazer:
-            # Paga ouro e remove materiais
-            jogador.ouro -= receita["custo_ouro"]
-            for mat, qtd in receita["materiais"].items():
-                removidos = 0
-                while removidos < qtd:
-                    for j, it_inv in enumerate(jogador.inventario):
-                        if it_inv["nome"] == mat:
-                            jogador.inventario.pop(j)
-                            removidos += 1
-                            break
-            
-            # Entrega o item baseado no banco ITENS
-            novo_item = ITENS[nome_alvo].copy()
-            novo_item["nome"] = nome_alvo
-            jogador.inventario.append(novo_item)
-            print(f"\n✅ Você fabricou: [{nome_alvo}]!")
-        else:
-            print("\n❌ Recursos insuficientes!")
+        if escolha == "1":
+            executar_crafting(jogador) # Agora a função existe!
+
+        elif escolha == "2":
+            # --- LÓGICA DE REPARO ---
+            itens_para_reparar = []
+            if jogador.arma: itens_para_reparar.append(("arma", jogador.arma))
+            if jogador.armadura: itens_para_reparar.append(("armadura", jogador.armadura))
+
+            if not itens_para_reparar:
+                print("\n❌ Você não tem nada equipado para consertar!")
+                continue
+
+            print("\n🔧 SELECIONE O ITEM PARA REPARAR:")
+            for i, (tipo, item) in enumerate(itens_para_reparar, start=1):
+                falta = 100 - item.get("durabilidade", 100)
+                custo = falta // 2 
+                print(f"{i} - {item['nome']} ({item.get('durabilidade', 100)}% DUR | Custo: {custo}g)")
+
+            op = input("\nEscolha o item ou 0 para voltar: ")
+            if op.isdigit() and 0 < int(op) <= len(itens_para_reparar):
+                tipo, item_sel = itens_para_reparar[int(op)-1]
+                falta = 100 - item_sel.get("durabilidade", 100)
+                custo = falta // 2
+
+                if custo == 0:
+                    print(f"\n✨ {item_sel['nome']} está como nova!")
+                elif jogador.ouro >= custo:
+                    jogador.ouro -= custo
+                    item_sel["durabilidade"] = 100
+                    print(f"\n🔥 O Ferreiro martelou e poliu seu item! {item_sel['nome']} restaurada.")
+                else:
+                    print("\n❌ Ouro insuficiente para o reparo!")
+
+        elif escolha == "0":
+            break
 
 def inimigo_aleatorio(area):
     dados_inimigo = random.choice(LISTA_INIMIGOS[area])

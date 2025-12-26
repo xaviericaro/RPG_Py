@@ -105,3 +105,13 @@ class Personagem:
 
     def esta_vivo(self):
         return self.vida > 0
+    
+    def reduzir_durabilidade_equipamentos(self):
+        """Reduz a durabilidade da arma e armadura após cada ação de combate."""
+        if self.arma and "durabilidade" in self.arma:
+            self.arma["durabilidade"] -= 1  # Perde 1% por ataque
+            if self.arma["durabilidade"] < 0: self.arma["durabilidade"] = 0
+            
+        if self.armadura and "durabilidade" in self.armadura:
+            self.armadura["durabilidade"] -= 1 # Perde 1% ao ser atingido
+            if self.armadura["durabilidade"] < 0: self.armadura["durabilidade"] = 0
