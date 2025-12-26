@@ -10,6 +10,7 @@ class Inimigo:
         defesa,
         xp_drop,
         ouro_drop,
+        possiveis_drops=None
     ):
         self.nome = nome
 
@@ -21,6 +22,7 @@ class Inimigo:
 
         self.xp_drop = xp_drop
         self.ouro_drop = ouro_drop
+        self.possiveis_drops = possiveis_drops or []
 
         self.status = {}
         self.defendendo = False

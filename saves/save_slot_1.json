@@ -1,39 +1,39 @@
 {
     "classe": "Guerreiro",
-    "area": "Montanha",
+    "area": "Floresta",
     "jogador": {
-        "nome": "de",
-        "nivel": 3,
+        "nome": "pou",
+        "nivel": 1,
         "pontos_disponiveis": 0,
-        "xp": 140,
-        "xp_para_proximo": 225,
-        "vida": 142,
-        "vida_max": 150,
-        "mana": 40,
-        "mana_max": 40,
-        "ataque": 25,
-        "defesa": 16,
-        "ouro": 235,
+        "xp": 80,
+        "xp_para_proximo": 100,
+        "vida": 91,
+        "vida_max": 120,
+        "mana": 30,
+        "mana_max": 30,
+        "ataque": 15,
+        "defesa": 10,
+        "ouro": 15,
         "inventario": [
             {
-                "nome": "Espada de Ferro",
+                "nome": "Poção de Cura",
+                "tipo": "consumivel",
+                "cura": 30
+            },
+            {
+                "nome": "Espada Enferrujada",
                 "tipo": "arma",
-                "ataque": 6,
-                "preco": 50
+                "ataque": 3
             }
         ],
-        "arma": {
-            "nome": "Espada Enferrujada",
-            "tipo": "arma",
-            "ataque": 3
-        },
+        "arma": null,
         "armadura": null
     },
     "quests": {
         "limpar_floresta": {
-            "progresso": 2,
-            "concluida": true,
-            "entregue": true
+            "progresso": 1,
+            "concluida": false,
+            "entregue": false
         },
         "dragao_ancião": {
             "progresso": 0,
