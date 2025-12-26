@@ -48,13 +48,23 @@ class Personagem:
     # EQUIPAMENTOS (Troca inteligente)
     # =========================
     def equipar_arma(self, nova_arma):
+        # Adiciona durabilidade se o item não tiver
+        if "durabilidade" not in nova_arma:
+            nova_arma["durabilidade"] = 100 # 100%
+            
         if self.arma:
-            self.inventario.append(self.arma) # Devolve a antiga
-            print(f"📦 {self.arma['nome']} voltou para o inventário.")
+            self.inventario.append(self.arma)
         
         self.arma = nova_arma
-        print(f"⚔️ {nova_arma['nome']} equipada! (+{nova_arma.get('ataque', 0)} ATK)")
+        print(f"⚔️ {nova_arma['nome']} equipada! Durabilidade: {nova_arma['durabilidade']}%")
 
+    def usar_durabilidade(self):
+        """Chame isso após cada ataque ou defesa no systems/batalha.py"""
+        if self.arma:
+            self.arma["durabilidade"] -= 2
+            if self.arma["durabilidade"] <= 0:
+                self.arma["durabilidade"] = 0
+                print(f"⚠️ Sua {self.arma['nome']} está quebrada e perdeu a eficiência!")
     def equipar_armadura(self, nova_armadura):
         if self.armadura:
             self.inventario.append(self.armadura) # Devolve a antiga
