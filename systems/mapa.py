@@ -4,12 +4,13 @@ from systems.batalha import batalha
 from persistence.save import salvar_jogo
 from systems.loja import loja
 from systems.npc import NPC, Quest
-from systems.npc import NPC, Quest
+from utils.input_utils import escolher_opcao
+
 
 MAPA = {
     "Vilarejo": {
         "descricao": "Um vilarejo tranquilo, com pessoas amigáveis.",
-        "opcoes": ["Falar com o Ancião", "Ir à Loja", "Descansar", "Ir para a Floresta"],
+        "opcoes": ["Falar com o Ancião", "Ver Diário de Quests", "Ir à Loja", "Descansar", "Ir para a Floresta"],
         "destinos": ["Vilarejo", "Vilarejo", "Vilarejo", "Floresta"]
     },
     "Floresta": {
@@ -47,7 +48,7 @@ quest_floresta = Quest(
     recompensa_ouro=50
 )
 
-npc_vilarejo = NPC("Ancião do Vilarejo", quest_floresta)
+npc_vilarejo = NPC("Ancião do Vilarejo", "limpar_floresta")
 
 
 def loop_mapa(jogador, area_atual):
@@ -64,11 +65,25 @@ def loop_mapa(jogador, area_atual):
         for i, opcao in enumerate(area["opcoes"]):
             print(f"{i+1} - {opcao}")
 
-        escolha = int(input(">>> ")) - 1
+        entrada = input(">>> ")
+
+        if not entrada.isdigit():
+            print("❌ Digite um número válido.")
+            continue
+
+        escolha = int(entrada) - 1
 
         if escolha < 0 or escolha >= len(area["opcoes"]):
-            print("Escolha inválida!")
+            print("❌ Opção inválida.")
             continue
+
+
+            
+        if area["opcoes"][escolha] == "Ver Diário de Quests":
+            jogador.mostrar_quests()
+            input("\nPressione ENTER para continuar...")
+            continue
+
 
         # DESCANSAR
         if area["opcoes"][escolha] == "Descansar":
@@ -99,17 +114,24 @@ def loop_mapa(jogador, area_atual):
                     print("💀 Você morreu na exploração...")
                     salvar_jogo(jogador, area_atual)
                     return
+
+                # ✅ AQUI O INIMIGO FOI DERROTADO
                 jogador.ganhar_xp(inimigo.xp_drop)
                 jogador.ouro += inimigo.ouro_drop
                 print(f"💰 Ganhou {inimigo.ouro_drop} ouro!")
+                print(f"⭐ Ganhou {inimigo.xp_drop} XP!")
+
+                # 🔔 AQUI É O EVENTO DE QUEST (LOCAL EXATO)
                 for quest in jogador.quests.values():
                     quest.registrar_evento(area_atual)
 
-                print(f"⭐ Ganhou {inimigo.xp_drop} XP!")
+
+
                 salvar_jogo(jogador, area_atual)
             else:
                 print("Nada aconteceu...")
             continue
+
 
         # DRAGÃO FINAL
         if area_atual == "Montanha" and area["opcoes"][escolha] == "Enfrentar o Dragão":
@@ -125,4 +147,21 @@ def loop_mapa(jogador, area_atual):
         # MUDAR DE ÁREA
         area_atual = area["destinos"][escolha]
         salvar_jogo(jogador, area_atual)
+
+        # MUDAR DE ÁREA
+        proximo_destino = area["destinos"][escolha]
+
+        # 🔒 EVENTO DE MAPA BLOQUEADO POR QUEST
+        if area_atual == "Floresta" and proximo_destino == "Montanha":
+            quest = jogador.quests.get("limpar_floresta")
+
+            if quest and not quest.entregue:
+                print("🚫 A Montanha está bloqueada!")
+                print("📜 O Ancião pediu para você limpar a Floresta primeiro.")
+                continue  # volta para o loop sem mudar de área
+
+        # ✅ SE PASSOU NA VERIFICAÇÃO, MUDA DE ÁREA
+        area_atual = proximo_destino
+        salvar_jogo(jogador, area_atual)
+
 

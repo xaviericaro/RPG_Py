@@ -23,16 +23,16 @@ def salvar_jogo(jogador, area):
     "inventario": jogador.inventario,
     "ouro": jogador.ouro,
     "quests": {
-        qid: {
-            "progresso": q.progresso,
-            "aceita": q.aceita,
-            "concluida": q.concluida
-        } for qid, q in jogador.quests.items()
-    }
+    qid: {
+        "progresso": q.progresso,
+        "aceita": q.aceita,
+        "concluida": q.concluida,
+        "entregue": q.entregue
+    } for qid, q in jogador.quests.items()
 }
 
-
-
+}
+    
     with open(SAVE_FILE, "w") as f:
         json.dump(dados, f, indent=4)
 
@@ -50,7 +50,7 @@ def carregar_jogo():
     # cria jogador pela classe
     jogador = classes[dados["classe"]](dados["nome"])
 
-    # restaura atributos
+    # restaura atributos básicos
     jogador.nivel = dados["nivel"]
     jogador.xp = dados["xp"]
     jogador.vida_max = dados.get("vida_max", jogador.vida_max)
@@ -75,12 +75,12 @@ def carregar_jogo():
                     recompensa_ouro=50,
                 )
 
-                quest.progresso = qdados["progresso"]
-                quest.aceita = qdados["aceita"]
-                quest.concluida = qdados["concluida"]
+                quest.progresso = qdados.get("progresso", 0)
+                quest.aceita = qdados.get("aceita", False)
+                quest.concluida = qdados.get("concluida", False)
+                quest.entregue = qdados.get("entregue", False)
 
                 jogador.quests[qid] = quest
 
     area_atual = dados.get("area", "Vilarejo")
     return jogador, area_atual
-

@@ -2,6 +2,8 @@ import os
 from core.jogador import Guerreiro, Mago, Arqueiro
 from persistence.save import definir_save, carregar_jogo, salvar_jogo
 from systems.mapa import loop_mapa
+from systems.quest_system import carregar_quests
+
 
 print("=== RPG EM PYTHON ===")
 print("1 - Continuar jogo")
@@ -55,6 +57,8 @@ else:
 
     area_atual = "Vilarejo"
     salvar_jogo(jogador, area_atual)
+
+jogador.quests = carregar_quests()
 
 # =========================
 # INICIAR MAPA

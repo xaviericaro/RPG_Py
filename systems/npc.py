@@ -1,3 +1,4 @@
+from systems.quest_system import Quest
 class Quest:
     def __init__(self, quest_id, descricao, area_objetivo, quantidade, recompensa_ouro):
         self.id = quest_id
@@ -8,10 +9,12 @@ class Quest:
         self.recompensa_ouro = recompensa_ouro
         self.aceita = False
         self.concluida = False
+        self.entregue = False
 
     def registrar_evento(self, area):
-        if not self.aceita or self.concluida:
+        if not self.aceita or self.concluida or self.entregue:
             return
+
 
         if area == self.area_objetivo:
             self.progresso += 1
@@ -23,29 +26,37 @@ class Quest:
 
 
 class NPC:
-    def __init__(self, nome, quest: Quest):
+    def __init__(self, nome, quest_id):
         self.nome = nome
-        self.quest = quest
+        self.quest_id = quest_id
 
     def falar(self, jogador):
+        # 🔐 proteção importante
+        if self.quest_id not in jogador.quests:
+            print("❓ Não tenho nenhuma missão para você agora.")
+            return
+
+        quest = jogador.quests[self.quest_id]
+
         print(f"\n🧑 {self.nome}:")
 
-        if not self.quest.aceita:
-            print(self.quest.descricao)
-            print("1 - Aceitar quest")
-            print("0 - Sair")
-            escolha = input(">>> ")
+        if quest.entregue:
+            print("Obrigado novamente, herói.")
+            return
 
-            if escolha == "1":
-                self.quest.aceita = True
+        if not quest.aceita:
+            print(quest.descricao)
+            if input("Aceitar quest? (s/n) ").lower() == "s":
+                quest.aceita = True
                 print("📜 Quest aceita!")
             return
 
-        if self.quest.concluida:
-            print("🎉 Você conseguiu! Aqui está sua recompensa.")
-            jogador.ouro += self.quest.recompensa_ouro
-            print(f"💰 Ganhou {self.quest.recompensa_ouro} ouro!")
-            self.quest.concluida = False  # impede repetir
+        if quest.concluida:
+            print("🎉 Excelente trabalho!")
+            jogador.ouro += quest.recompensa["ouro"]
+            jogador.ganhar_xp(quest.recompensa["xp"])
+            quest.entregue = True
             return
 
-        print("Ainda não terminou sua missão...")
+        print("Continue sua missão.")
+

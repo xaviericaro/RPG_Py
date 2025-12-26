@@ -1,0 +1,22 @@
+{
+  "limpar_floresta": {
+    "descricao": "Derrote 2 inimigos na Floresta e volte ao aldeão.",
+    "tipo": "derrotar",
+    "area_objetivo": "Floresta",
+    "quantidade": 2,
+    "recompensa": {
+      "ouro": 50,
+      "xp": 30
+    }
+  },
+  "derrotar_orc": {
+    "descricao": "Derrote o Orc da Montanha.",
+    "tipo": "boss",
+    "area_objetivo": "Montanha",
+    "quantidade": 1,
+    "recompensa": {
+      "ouro": 120,
+      "xp": 80
+    }
+  }
+}

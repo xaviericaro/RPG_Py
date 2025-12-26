@@ -63,6 +63,27 @@ class Personagem:
             if self.status[efeito] <= 0:
                 del self.status[efeito]
 
+
+    def mostrar_quests(self):
+        if not self.quests:
+            print("📭 Você não possui quests ativas.")
+            return
+
+        print("\n📜 DIÁRIO DE QUESTS")
+        for quest in self.quests.values():
+            status = "🟢 Concluída" if quest.concluida else "🟡 Em progresso"
+            if quest.entregue:
+                status = "🔵 Entregue"
+
+            print(f"""
+    [{quest.id}]
+    {quest.descricao}
+    Status: {status}
+    Progresso: {quest.progresso}/{quest.quantidade}
+    Recompensa: {quest.recompensa_ouro} ouro
+    """)
+
+
     def esta_vivo(self):
         return self.vida > 0
 

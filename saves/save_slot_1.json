@@ -1,12 +1,12 @@
 {
     "nome": "Xavier",
     "classe": "Guerreiro",
-    "nivel": 6,
-    "xp": 15,
-    "vida": 130,
-    "vida_max": 130,
-    "mana": 35,
-    "mana_max": 35,
+    "nivel": 7,
+    "xp": 65,
+    "vida": 109,
+    "vida_max": 180,
+    "mana": 30,
+    "mana_max": 30,
     "status": {},
     "inventario": [
         {
@@ -15,12 +15,19 @@
             "ataque": 3
         }
     ],
-    "ouro": 150,
+    "ouro": 250,
     "quests": {
         "limpar_floresta": {
-            "progresso": 2,
-            "aceita": true,
-            "concluida": false
+            "progresso": 0,
+            "aceita": false,
+            "concluida": false,
+            "entregue": false
+        },
+        "derrotar_orc": {
+            "progresso": 0,
+            "aceita": false,
+            "concluida": false,
+            "entregue": false
         }
     }
 }
