@@ -63,7 +63,7 @@ else:
         {"nome": "Espada Enferrujada", "tipo": "arma", "ataque": 3},
     ]
 
-    # 🔹 carrega quests do JSON
+    # carrega quests do JSON
     jogador.quests = carregar_quests()
 
     area_atual = "Vilarejo"

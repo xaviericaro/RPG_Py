@@ -1,19 +1,19 @@
 {
     "classe": "Guerreiro",
-    "area": "Floresta",
+    "area": "Vilarejo",
     "jogador": {
-        "nome": "pou",
-        "nivel": 1,
-        "pontos_disponiveis": 0,
-        "xp": 80,
-        "xp_para_proximo": 100,
-        "vida": 91,
-        "vida_max": 120,
-        "mana": 30,
-        "mana_max": 30,
-        "ataque": 15,
-        "defesa": 10,
-        "ouro": 15,
+        "nome": "Lula",
+        "nivel": 2,
+        "pontos_disponiveis": 4,
+        "xp": 20,
+        "xp_para_proximo": 150,
+        "vida": 130,
+        "vida_max": 130,
+        "mana": 35,
+        "mana_max": 35,
+        "ataque": 19,
+        "defesa": 12,
+        "ouro": 90,
         "inventario": [
             {
                 "nome": "Poção de Cura",
@@ -24,6 +24,11 @@
                 "nome": "Espada Enferrujada",
                 "tipo": "arma",
                 "ataque": 3
+            },
+            {
+                "tipo": "material",
+                "valor": 10,
+                "nome": "Pele de Lobo"
             }
         ],
         "arma": null,
@@ -31,9 +36,9 @@
     },
     "quests": {
         "limpar_floresta": {
-            "progresso": 1,
-            "concluida": false,
-            "entregue": false
+            "progresso": 2,
+            "concluida": true,
+            "entregue": true
         },
         "dragao_ancião": {
             "progresso": 0,

@@ -40,5 +40,43 @@ LISTA_INIMIGOS = {
     ],
     "Montanha": [
         {"nome": "Dragão Ancião", "hp": 250, "atk": 35, "def": 15, "xp": 300, "ouro": 200, "drops": ["Escama de Dragão"]}
-    ]
+    ],
+}
+
+MAPA = {
+    "Vilarejo": {
+        "descricao": "Um vilarejo tranquilo, com pessoas amigaveis.",
+        "opcoes": [
+            "Falar com o Ancião",
+            "Ir à Loja",
+            "Descansar",
+            "Distribuir Pontos",
+            "Ferreiro (Crafting)",
+            "Ir para a Floresta",
+        ],
+        "destinos": [
+            None, None, None, None, None, "Floresta"
+        ],
+    },
+    "Floresta": {
+        "descricao": "Uma floresta sombria cheia de perigos.",
+        "opcoes": [
+            "Explorar",
+            "Voltar ao Vilarejo",
+            "Seguir para a Montanha",
+        ],
+        "destinos": [
+            None, "Vilarejo", "Montanha"
+        ],
+    },
+    "Montanha": {
+        "descricao": "Uma montanha onde o Dragão Ancião habita.",
+        "opcoes": [
+            "Enfrentar o Dragão",
+            "Voltar para a Floresta",
+        ],
+        "destinos": [
+            None, "Floresta"
+        ],
+    },
 }
