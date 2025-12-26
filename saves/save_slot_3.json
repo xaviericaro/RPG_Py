@@ -1,10 +1,10 @@
 {
     "classe": "Guerreiro",
-    "area": "Vilarejo",
+    "area": "Floresta",
     "jogador": {
-        "nome": "se",
+        "nome": "Vick",
         "nivel": 1,
-        "xp": 0,
+        "xp": 90,
         "xp_para_proximo": 100,
         "vida": 120,
         "vida_max": 120,
@@ -12,7 +12,7 @@
         "mana_max": 30,
         "ataque": 15,
         "defesa": 10,
-        "ouro": 0,
+        "ouro": 80,
         "inventario": [
             {
                 "nome": "Poção de Cura",
@@ -30,9 +30,9 @@
     },
     "quests": {
         "limpar_floresta": {
-            "progresso": 0,
-            "concluida": false,
-            "entregue": false
+            "progresso": 2,
+            "concluida": true,
+            "entregue": true
         },
         "dragao_ancião": {
             "progresso": 0,

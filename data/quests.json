@@ -15,6 +15,12 @@
     "descricao": "Derrote o Dragão Ancião na Montanha.",
     "area_objetivo": "Montanha",
     "quantidade": 1,
-    "recompensa_ouro": 200
+    "recompensa_ouro": 200,
+    "dialogos": {
+      "inicio": "O céu escureceu... o Dragão despertou. Você é nossa única esperança!",
+      "progresso": "Ele está lá em cima, eu consigo ouvir o bater das asas...",
+      "concluida": "O mal foi banido! Você é uma lenda!",
+      "entregue": "Obrigado por salvar nosso mundo."
+    }
   }
 }

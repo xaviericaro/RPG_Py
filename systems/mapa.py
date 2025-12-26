@@ -191,5 +191,18 @@ def loop_mapa(jogador, area_atual):
         # =========================
         destino = area["destinos"][escolha]
         if destino:
+            if destino == "Montanha":
+                quest_floresta = jogador.quests.get("limpar_floresta")
+                
+                # Se a quest não existe ou não foi entregue, bloqueia
+                if not quest_floresta or not quest_floresta.entregue:
+                    print("\n" + "!"*30)
+                    print("🚫 CAMINHO BLOQUEADO!")
+                    print("O guarda da fronteira diz: 'Somente heróis autorizados pelo Ancião passam para a Montanha!'")
+                    print("!"*30)
+                    input("\nPressione Enter para voltar...")
+                    continue
+
             area_atual = destino
+            print(f"\n✈️ Viajando para {area_atual}...")
             salvar_jogo(jogador, area_atual)
