@@ -3,36 +3,35 @@
     "area": "Floresta",
     "jogador": {
         "nome": "Vick",
-        "nivel": 1,
-        "xp": 90,
-        "xp_para_proximo": 100,
-        "vida": 120,
-        "vida_max": 120,
-        "mana": 30,
-        "mana_max": 30,
-        "ataque": 15,
-        "defesa": 10,
-        "ouro": 80,
+        "nivel": 3,
+        "xp": 190,
+        "xp_para_proximo": 225,
+        "vida": 140,
+        "vida_max": 140,
+        "mana": 40,
+        "mana_max": 40,
+        "ataque": 19,
+        "defesa": 14,
+        "ouro": 150,
         "inventario": [
             {
                 "nome": "Poção de Cura",
                 "tipo": "consumivel",
                 "cura": 30
-            },
-            {
-                "nome": "Espada Enferrujada",
-                "tipo": "arma",
-                "ataque": 3
             }
         ],
-        "arma": null,
+        "arma": {
+            "nome": "Espada Enferrujada",
+            "tipo": "arma",
+            "ataque": 3
+        },
         "armadura": null
     },
     "quests": {
         "limpar_floresta": {
-            "progresso": 2,
-            "concluida": true,
-            "entregue": true
+            "progresso": 0,
+            "concluida": false,
+            "entregue": false
         },
         "dragao_ancião": {
             "progresso": 0,

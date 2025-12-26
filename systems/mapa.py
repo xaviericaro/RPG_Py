@@ -69,6 +69,7 @@ def inimigo_aleatorio(area):
         return random.choice(
             [
                 Inimigo("Goblin", 50, 10, 4, 30, 10),
+                Inimigo("Orc Brutal", 70, 15, 6, 80, 15),
                 Inimigo("Lobo Sombrio", 80, 18, 7, 60, 20),
             ]
         )
@@ -145,9 +146,16 @@ def loop_mapa(jogador, area_atual):
                 continue
 
             # história antes da batalha
+            from systems.historia import encontro_goblin, encontro_orc, encontro_lobo
+
             if inimigo.nome == "Goblin":
-                from systems.historia import encontro_goblin
                 encontro_goblin()
+            elif inimigo.nome == "Orc Brutal":
+                encontro_orc()
+            elif inimigo.nome == "Lobo Sombrio":
+                encontro_lobo()
+            else:
+                print(f"\n⚔️ Um {inimigo.nome} bloqueia seu caminho!")
 
             venceu = batalha(jogador, inimigo)
 
@@ -175,13 +183,14 @@ def loop_mapa(jogador, area_atual):
             from systems.historia import chegada_montanha, final_vitoria
 
             chegada_montanha()
+
             dragao = inimigo_aleatorio("Montanha")
             venceu = batalha(jogador, dragao)
 
             if venceu:
                 final_vitoria()
             else:
-                print("💀 O Dragão foi forte demais...")
+                print("💀 O Dragão foi forte demais para você...")
 
             salvar_jogo(jogador, area_atual)
             return
