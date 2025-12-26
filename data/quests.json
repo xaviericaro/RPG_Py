@@ -1,9 +1,15 @@
 {
   "limpar_floresta": {
-    "descricao": "Derrote 2 inimigos na Floresta e volte ao Ancião.",
+    "descricao": "Derrote 2 inimigos na Floresta.",
     "area_objetivo": "Floresta",
     "quantidade": 2,
-    "recompensa_ouro": 50
+    "recompensa_ouro": 50,
+    "dialogos": {
+      "inicio": "Socorro! A floresta está cheia de monstros. Você pode me ajudar?",
+      "progresso": "Ainda sinto o perigo vindo da floresta... continue lutando!",
+      "concluida": "Você limpou a floresta! Muito obrigado, tome estas moedas.",
+      "entregue": "Graças a você, as crianças podem brincar na floresta novamente."
+    }
   },
   "dragao_ancião": {
     "descricao": "Derrote o Dragão Ancião na Montanha.",

@@ -3,6 +3,7 @@ from core.jogador import Guerreiro, Mago, Arqueiro
 from persistence.save import definir_save, carregar_jogo, salvar_jogo
 from systems.mapa import loop_mapa
 from systems.quest_system import carregar_quests
+from systems.historia import introducao
 
 
 print("=== RPG EM PYTHON ===")
@@ -53,6 +54,8 @@ else:
     else:
         print("Classe inválida!")
         exit()
+
+    print(introducao())
 
     # inventário inicial
     jogador.inventario = [

@@ -2,7 +2,7 @@
     "classe": "Guerreiro",
     "area": "Vilarejo",
     "jogador": {
-        "nome": "de",
+        "nome": "Mike",
         "nivel": 2,
         "xp": 20,
         "xp_para_proximo": 150,
@@ -12,13 +12,20 @@
         "mana_max": 35,
         "ataque": 17,
         "defesa": 12,
-        "ouro": 95,
-        "inventario": [],
-        "arma": {
-            "nome": "Espada Enferrujada",
-            "tipo": "arma",
-            "ataque": 3
-        },
+        "ouro": 90,
+        "inventario": [
+            {
+                "nome": "Poção de Cura",
+                "tipo": "consumivel",
+                "cura": 30
+            },
+            {
+                "nome": "Espada Enferrujada",
+                "tipo": "arma",
+                "ataque": 3
+            }
+        ],
+        "arma": null,
         "armadura": null
     },
     "quests": {

@@ -13,6 +13,7 @@ class Quest:
         area_objetivo,
         quantidade,
         recompensa_ouro,
+        dialogos
     ):
         self.id = quest_id
         self.descricao = descricao
@@ -20,6 +21,7 @@ class Quest:
         self.area_objetivo = area_objetivo
         self.quantidade = quantidade
         self.recompensa_ouro = recompensa_ouro
+        self.dialogos = dialogos  # Armazena as falas do JSON
 
         self.progresso = 0
         self.aceita = False
@@ -75,10 +77,10 @@ def carregar_quests():
         quests[quest_id] = Quest(
             quest_id=quest_id,
             descricao=q["descricao"],
-            tipo_evento=q["tipo_evento"],
+            tipo_evento=q.get("tipo_evento", "geral"),
             area_objetivo=q["area_objetivo"],
             quantidade=q["quantidade"],
             recompensa_ouro=q["recompensa_ouro"],
+            dialogos=q.get("dialogos", {}) # Carrega os diálogos aqui
         )
-
     return quests
