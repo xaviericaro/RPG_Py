@@ -52,10 +52,11 @@ MAPA = {
             "Descansar",
             "Distribuir Pontos",
             "Ferreiro (Crafting)",
+            "Salvar e Sair",
             "Ir para a Floresta",
         ],
         "destinos": [
-            None, None, None, None, None, "Floresta"
+            None, None, None, None, None, None, "Floresta"
         ],
     },
     "Floresta": {

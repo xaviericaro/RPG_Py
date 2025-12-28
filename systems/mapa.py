@@ -193,10 +193,11 @@ MAPA = {
             "Descansar",
             "Distribuir Pontos",
             "Ferreiro (Crafting)",
+            "Salvar e Sair",
             "Ir para a Floresta",
         ],
         "destinos": [
-            None, None, None, None, None, "Floresta"
+            None, None, None, None, None, None, "Floresta"
         ],
     },
     "Floresta": {
@@ -287,6 +288,11 @@ def loop_mapa(jogador, area_atual):
             ferreiro(jogador)
             salvar_jogo(jogador, area_atual)
             continue
+
+        elif opcao_texto == "Salvar e Sair":
+            salvar_jogo(jogador, area_atual)
+            print("\n💾 Jogo salvo com sucesso! Até a próxima aventura!")
+            return
 
         elif opcao_texto == "Explorar":
             inimigo = inimigo_aleatorio(area_atual)

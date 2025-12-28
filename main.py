@@ -6,7 +6,7 @@ from systems.quest_system import carregar_quests
 from systems.historia import introducao
 
 
-print("=== RPG EM PYTHON ===")
+print("=== StormStand ===")
 print("1 - Continuar jogo")
 print("2 - Novo jogo")
 opcao = input(">>> ")
