@@ -7,7 +7,7 @@ from persistence.save import definir_save, salvar_jogo, carregar_jogo
 from systems.mapa import inimigo_aleatorio
 from data.database import ITENS, RECEITAS, MAPA, LISTA_INIMIGOS
 
-# === CONFIGURAÇÕES ===
+# Visual
 LARGURA, ALTURA = 800, 600
 FPS = 60
 
@@ -21,7 +21,6 @@ OURO = (255, 215, 0)
 CINZA = (70, 70, 70)
 ROXO = (150, 0, 200)
 
-# === CLASSE BOTÃO ===
 class Botao:
     def __init__(self, x, y, w, h, texto, cor):
         self.rect = pygame.Rect(x, y, w, h)
@@ -43,7 +42,7 @@ class Botao:
             return self.rect.collidepoint(evento.pos)
         return False
 
-# === AUXILIARES DE INTERFACE ===
+# Interface
 def desenhar_texto(tela, texto, x, y, cor=BRANCO, tamanho=30, centralizado=False):
     fonte = pygame.font.SysFont("Arial", tamanho)
     img = fonte.render(str(texto), True, cor)
@@ -88,7 +87,7 @@ def main():
     btn_mago = Botao(450, 300, 200, 60, "MAGO", (0, 0, 150))
 
     while True:
-        tela.fill(PRETO) # Limpa a tela no início de cada frame
+        tela.fill(PRETO)
         eventos = pygame.event.get()
         
         for evento in eventos:
@@ -96,7 +95,6 @@ def main():
                 pygame.quit()
                 sys.exit()
 
-            # --- LÓGICA DE CLIQUE POR ESTADO ---
             if estado == "MENU_PRINCIPAL":
                 if btn_novo.clicado(evento): estado = "SELECAO_SLOT_NOVO"
                 if btn_carregar.clicado(evento): estado = "SELECAO_SLOT_CARREGAR"
@@ -153,7 +151,6 @@ def main():
                                 jogador.vida -= dano_i
                                 log_combate = f"Dano: {dano} | Recebeu: {dano_i}"
 
-        # === DESENHO POR ESTADO ===
         if estado == "MENU_PRINCIPAL":
             desenhar_texto(tela, "PYTHON QUEST RPG", LARGURA//2, 100, VERDE, 60, True)
             btn_novo.desenhar(tela)

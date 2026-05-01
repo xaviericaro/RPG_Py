@@ -6,10 +6,6 @@ from systems.loja import loja
 from systems.npc import NPC
 from data.database import ITENS, RECEITAS, LISTA_INIMIGOS
 
-# =========================
-# FUNÇÕES DE APOIO
-# =========================
-
 def menu_atributos(jogador):
     """Interface para o jogador distribuir pontos ganhos ao subir de nível."""
     while jogador.pontos_disponiveis > 0:
@@ -51,17 +47,14 @@ def executar_crafting(jogador):
     """Lógica interna para fabricar itens."""
     from data.database import ITENS, RECEITAS
     
-    # 1. Mapear o que o jogador tem no inventário
     materiais_jogador = {}
     for it in jogador.inventario:
         materiais_jogador[it["nome"]] = materiais_jogador.get(it["nome"], 0) + 1
 
-    # 2. Mostrar as receitas disponíveis
     opcoes_craft = list(RECEITAS.keys())
     print("\n--- OFICINA DE CRIAÇÃO ---")
     for i, nome_item in enumerate(opcoes_craft, start=1):
         rec = RECEITAS[nome_item]
-        # Formata o texto dos materiais necessários
         req_txt = " + ".join([f"{q}x {m}" for m, q in rec['materiais'].items()])
         print(f"{i} - {nome_item}")
         print(f"    👉 Requer: {req_txt} | Custo: {rec['custo_ouro']}g")
@@ -80,7 +73,6 @@ def executar_crafting(jogador):
     nome_alvo = opcoes_craft[idx]
     receita = RECEITAS[nome_alvo]
 
-    # 3. Validar Ouro e Materiais
     pode_fazer = True
     if jogador.ouro < receita["custo_ouro"]:
         pode_fazer = False
@@ -91,10 +83,8 @@ def executar_crafting(jogador):
             break
 
     if pode_fazer:
-        # Pagar Ouro
         jogador.ouro -= receita["custo_ouro"]
         
-        # Remover Materiais do Inventário
         for mat, qtd_necessaria in receita["materiais"].items():
             removidos = 0
             while removidos < qtd_necessaria:
@@ -104,7 +94,6 @@ def executar_crafting(jogador):
                         removidos += 1
                         break
         
-        # Entregar o Item Novo (Cópia do Banco de Dados)
         novo_item = ITENS[nome_alvo].copy()
         novo_item["nome"] = nome_alvo
         jogador.inventario.append(novo_item)
@@ -125,10 +114,9 @@ def ferreiro(jogador):
         escolha = input("\nO que deseja fazer? >>> ")
 
         if escolha == "1":
-            executar_crafting(jogador) # Agora a função existe!
+            executar_crafting(jogador)
 
         elif escolha == "2":
-            # --- LÓGICA DE REPARO ---
             itens_para_reparar = []
             if jogador.arma: itens_para_reparar.append(("arma", jogador.arma))
             if jogador.armadura: itens_para_reparar.append(("armadura", jogador.armadura))
@@ -164,7 +152,6 @@ def ferreiro(jogador):
 def inimigo_aleatorio(area):
     dados_inimigo = random.choice(LISTA_INIMIGOS[area])
     
-    # Criamos a lista de itens reais baseada nos nomes que estão no banco de dados
     possiveis_drops = []
     for nome_item in dados_inimigo["drops"]:
         item_info = ITENS[nome_item].copy()
@@ -181,9 +168,6 @@ def inimigo_aleatorio(area):
         possiveis_drops
     )
 
-# =========================
-# MAPA DO JOGO
-# =========================
 MAPA = {
     "Vilarejo": {
         "descricao": "Um vilarejo tranquilo, com pessoas amigáveis.",
@@ -225,14 +209,10 @@ MAPA = {
 
 npc_vilarejo = NPC(nome="Ancião do Vilarejo", quest_id="limpar_floresta")
 
-# =========================
-# LOOP DO MAPA
-# =========================
 def loop_mapa(jogador, area_atual):
     while True:
         area = MAPA[area_atual]
 
-        # Equipamentos atuais para exibição
         arma_nome = jogador.arma["nome"] if jogador.arma else "Mãos Nuas"
         armor_nome = jogador.armadura["nome"] if jogador.armadura else "Trapos"
 
@@ -241,7 +221,7 @@ def loop_mapa(jogador, area_atual):
         print(
             f"❤️  HP: {jogador.vida}/{jogador.vida_max} | 🔮 MP: {jogador.mana}/{jogador.mana_max}\n"
             f"⭐ NV: {jogador.nivel} | 🪙 Ouro: {jogador.ouro}\n"
-            f"⚔️ Arma: {arma_nome} | 🛡️ Armadura: {armor_nome}" # STATUS DE EQUIPE
+            f"⚔️ Arma: {arma_nome} | 🛡️ Armadura: {armor_nome}"
         )
 
         for i, opcao in enumerate(area["opcoes"], start=1):
@@ -261,7 +241,6 @@ def loop_mapa(jogador, area_atual):
         opcao_texto = area["opcoes"][escolha_idx]
         destino = area["destinos"][escolha_idx]
 
-        # --- AÇÕES ESPECIAIS (NÃO MUDAM DE ÁREA) ---
         if opcao_texto == "Falar com o Ancião":
             npc_vilarejo.falar(jogador)
             salvar_jogo(jogador, area_atual)
@@ -311,7 +290,7 @@ def loop_mapa(jogador, area_atual):
             jogador.ganhar_xp(inimigo.xp_drop)
             jogador.ouro += inimigo.ouro_drop
             
-            # --- SISTEMA DE LOOT DINÂMICO ---
+            # Loot dinâmico
             if inimigo.possiveis_drops:
                 if random.random() < 0.5:
                     item_ganho = random.choice(inimigo.possiveis_drops).copy()
@@ -335,7 +314,6 @@ def loop_mapa(jogador, area_atual):
                 print("💀 O Dragão derrotou você.")
                 return
 
-        # --- MUDANÇA DE ÁREA (DESTINOS) ---
         if destino:
             if destino == "Montanha":
                 quest_f = jogador.quests.get("limpar_floresta")

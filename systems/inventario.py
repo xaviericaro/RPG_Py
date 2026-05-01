@@ -25,7 +25,7 @@ def usar_item(jogador):
 
     nome_item = lista_menu[escolha - 1]
     indice_real = indices_originais[nome_item]
-    item = jogador.inventario.pop(indice_real) # Removemos para equipar ou usar
+    item = jogador.inventario.pop(indice_real)
 
     if item["tipo"] == "consumivel":
         cura = item.get("cura", 0)
@@ -40,4 +40,4 @@ def usar_item(jogador):
 
     elif item["tipo"] == "material":
         print(f"📦 {item['nome']} é material. Vá ao Ferreiro!")
-        jogador.inventario.append(item) # Devolve pois material não se "usa" aqui
+        jogador.inventario.append(item)

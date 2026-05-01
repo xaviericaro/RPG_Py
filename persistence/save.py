@@ -6,9 +6,7 @@ from core.jogador import Guerreiro, Mago, Arqueiro
 
 SAVE_FILE = None
 
-# =========================
 # DEFINIR SLOT DE SAVE
-# =========================
 def definir_save(caminho):
     global SAVE_FILE
     
@@ -26,11 +24,7 @@ def definir_save(caminho):
         except OSError:
             SAVE_FILE = os.path.basename(SAVE_FILE)
 
-
-
-# =========================
 # SALVAR JOGO
-# =========================
 def salvar_jogo(jogador, area_atual):
     if not SAVE_FILE:
         return
@@ -71,10 +65,7 @@ def salvar_jogo(jogador, area_atual):
 
     print("💾 Jogo salvo com sucesso!")
 
-
-# =========================
 # CARREGAR JOGO
-# =========================
 def carregar_jogo():
     if not SAVE_FILE or not os.path.exists(SAVE_FILE):
         raise FileNotFoundError("Save não encontrado.")
@@ -115,7 +106,7 @@ def carregar_jogo():
     jogador.arma = info["arma"]
     jogador.armadura = info["armadura"]
 
-    # quests serão recriadas fora (quest_system)
+    # Recria as quests
     jogador.quests = {}
 
     area_atual = dados.get("area", "Vilarejo")

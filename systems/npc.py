@@ -14,26 +14,20 @@ class NPC:
             print(f"{self.nome}: Não tenho nada para você agora.")
             return
 
-        # --- LÓGICA DE DIÁLOGOS DINÂMICOS ---
-
-        # 1. Já terminou tudo
+        # Lógica de Diálogos
         if quest.entregue:
             msg = quest.dialogos.get("entregue", "Obrigado pela ajuda!")
             print(f"{self.nome}: {msg}")
 
-        # 2. Completou os objetivos, mas não recebeu a recompensa
         elif quest.concluida:
             msg = quest.dialogos.get("concluida", "Incrível! Você conseguiu.")
             print(f"{self.nome}: {msg}")
-            # Chama o método de entrega que você já tem no quest_system
             quest.entregar(jogador) 
 
-        # 3. Está no meio da missão
         elif quest.aceita:
             msg = quest.dialogos.get("progresso", "Como vai a missão?")
             print(f"{self.nome}: {msg} ({quest.progresso}/{quest.quantidade})")
 
-        # 4. Primeira vez falando (Oferecer a quest)
         else:
             msg = quest.dialogos.get("inicio", quest.descricao)
             print(f"{self.nome}: {msg}")

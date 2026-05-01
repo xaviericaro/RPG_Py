@@ -31,7 +31,6 @@ RECEITAS = {
     }
 }
 
-# Aqui você define os inimigos e o que eles podem dropar (pelas chaves do ITENS)
 LISTA_INIMIGOS = {
     "Floresta": [
         {"nome": "Goblin", "hp": 50, "atk": 10, "def": 4, "xp": 30, "ouro": 10, "drops": ["Tecido Rasgado"]},

@@ -24,16 +24,14 @@ class Personagem:
         self.ouro = 0
         self.quests = {}
 
-    # =========================
-    # COMBATE (Cálculos com bônus)
-    # =========================
+    # COMBATE
     def ataque_total(self):
-        # Soma o ataque base + ataque da arma equipada
+        # Soma ataque base + ataque da arma equipada
         bonus = self.arma.get("ataque", 0) if self.arma else 0
         return self.ataque + bonus
 
     def defesa_total(self):
-        # Soma a defesa base + defesa da armadura equipada
+        # Soma defesa base + defesa da armadura equipada
         bonus = self.armadura.get("defesa", 0) if self.armadura else 0
         total = self.defesa + bonus
         return total * 2 if self.defendendo else total
@@ -44,12 +42,11 @@ class Personagem:
         alvo.vida = max(0, alvo.vida - dano_final)
         print(f"🗡️ {self.nome} causou {dano_final} de dano!")
 
-    # =========================
-    # EQUIPAMENTOS (Troca inteligente)
-    # =========================
+
+    # EQUIPAMENTOS 
     def equipar_arma(self, nova_arma):
         if "durabilidade" not in nova_arma:
-            nova_arma["durabilidade"] = 100 # 100%
+            nova_arma["durabilidade"] = 100 
             
         if self.arma:
             self.inventario.append(self.arma)

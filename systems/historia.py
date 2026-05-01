@@ -1,16 +1,12 @@
 import time
 
-
 def escrever(texto, delay=0.02):
     for c in texto:
         print(c, end="", flush=True)
         time.sleep(delay)
     print("\n")
 
-
-# =========================
 # INTRODUÇÃO
-# =========================
 def introducao():
     escrever(
         "Em um mundo ameaçado por forças antigas,\n"
@@ -21,10 +17,7 @@ def introducao():
         "Hoje, um novo herói surge.\n"
     )
 
-
-# =========================
 # EVENTOS DE HISTÓRIA
-# =========================
 def encontro_goblin():
     escrever("Um Goblin salta das sombras, brandindo uma adaga enferrujada!")
 

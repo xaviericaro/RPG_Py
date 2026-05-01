@@ -1,7 +1,5 @@
 import random
 from core.personagem import Personagem
-
-
 class Guerreiro(Personagem):
     def __init__(self, nome):
         super().__init__(
@@ -26,8 +24,6 @@ class Guerreiro(Personagem):
 
         alvo.status["sangramento"] = 2
         print(f"💥 Golpe Brutal causou {dano_final} de dano!")
-
-
 class Mago(Personagem):
     def __init__(self, nome):
         super().__init__(
@@ -52,8 +48,6 @@ class Mago(Personagem):
 
         alvo.status["veneno"] = 3
         print(f"🔥 Bola de Fogo causou {dano_final} de dano!")
-
-
 class Arqueiro(Personagem):
     def __init__(self, nome):
         super().__init__(

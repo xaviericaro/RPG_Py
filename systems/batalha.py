@@ -5,7 +5,7 @@ def batalha(jogador, inimigo):
     print(f"\n⚔️ Um {inimigo.nome} apareceu!")
 
     while jogador.esta_vivo() and inimigo.esta_vivo():
-        # aplica efeitos (sangramento etc)
+        # aplica efeitos
         jogador.aplicar_status()
 
         print(
@@ -52,7 +52,6 @@ def batalha(jogador, inimigo):
             print("❌ Opção inválida.")
             continue
 
-        # turno do inimigo
         if inimigo.esta_vivo():
             inimigo.atacar(jogador)
 

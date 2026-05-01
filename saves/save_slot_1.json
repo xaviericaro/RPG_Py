@@ -1,19 +1,19 @@
 {
     "classe": "Guerreiro",
-    "area": "Vilarejo",
+    "area": "Montanha",
     "jogador": {
-        "nome": "as",
-        "nivel": 1,
-        "pontos_disponiveis": 0,
-        "xp": 0,
-        "xp_para_proximo": 100,
-        "vida": 120,
-        "vida_max": 120,
-        "mana": 30,
-        "mana_max": 30,
-        "ataque": 15,
-        "defesa": 10,
-        "ouro": 0,
+        "nome": "loo",
+        "nivel": 3,
+        "pontos_disponiveis": 5,
+        "xp": 10,
+        "xp_para_proximo": 225,
+        "vida": 150,
+        "vida_max": 150,
+        "mana": 50,
+        "mana_max": 50,
+        "ataque": 23,
+        "defesa": 16,
+        "ouro": 125,
         "inventario": [
             {
                 "nome": "Poção de Cura",
@@ -21,19 +21,24 @@
                 "cura": 30
             },
             {
-                "nome": "Espada Enferrujada",
-                "tipo": "arma",
-                "ataque": 3
+                "tipo": "material",
+                "valor": 10,
+                "nome": "Pele de Lobo"
             }
         ],
-        "arma": null,
+        "arma": {
+            "nome": "Espada Enferrujada",
+            "tipo": "arma",
+            "ataque": 3,
+            "durabilidade": 100
+        },
         "armadura": null
     },
     "quests": {
         "limpar_floresta": {
-            "progresso": 0,
-            "concluida": false,
-            "entregue": false
+            "progresso": 2,
+            "concluida": true,
+            "entregue": true
         },
         "dragao_ancião": {
             "progresso": 0,

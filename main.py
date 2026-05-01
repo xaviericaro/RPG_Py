@@ -20,21 +20,17 @@ slot = input(">>> ")
 save_path = f"saves/save_slot_{slot}.json"
 definir_save(save_path)
 
-# =========================
-# CONTINUAR JOGO
-# =========================
+# Continua Jogo
 if opcao == "1" and os.path.exists(save_path):
     jogador, area_atual, dados_quests_salvas = carregar_jogo()
 
-    # 🔹 carrega quests do JSON
     jogador.quests = carregar_quests()
 
     print(f"\n🔄 Bem-vindo de volta, {jogador.nome}!")
     print(f"📍 Última localização: {area_atual}")
 
-# =========================
-# NOVO JOGO
-# =========================
+
+# Novo Jogo
 else:
     print("\n=== CRIAÇÃO DE PERSONAGEM ===")
     nome = input("Digite o nome do personagem: ")
@@ -57,19 +53,17 @@ else:
 
     print(introducao())
 
-    # inventário inicial
+    # Inventário inicial
     jogador.inventario = [
         {"nome": "Poção de Cura", "tipo": "consumivel", "cura": 30},
         {"nome": "Espada Enferrujada", "tipo": "arma", "ataque": 3},
     ]
 
-    # carrega quests do JSON
+
     jogador.quests = carregar_quests()
 
     area_atual = "Vilarejo"
     salvar_jogo(jogador, area_atual)
 
-# =========================
-# INICIAR MAPA
-# =========================
+# Inicia mapa
 loop_mapa(jogador, area_atual)

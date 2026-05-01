@@ -2,8 +2,6 @@ import json
 import os
 
 QUESTS_FILE = "data/quests.json"
-
-
 class Quest:
     def __init__(
         self,
@@ -21,16 +19,14 @@ class Quest:
         self.area_objetivo = area_objetivo
         self.quantidade = quantidade
         self.recompensa_ouro = recompensa_ouro
-        self.dialogos = dialogos  # Armazena as falas do JSON
+        self.dialogos = dialogos
 
         self.progresso = 0
         self.aceita = False
         self.concluida = False
         self.entregue = False
 
-    # =========================
-    # EVENTOS
-    # =========================
+    # Eventos
     def registrar_evento(self, area):
         if not self.aceita or self.concluida:
             return
@@ -47,9 +43,6 @@ class Quest:
             self.concluida = True
             print(f"✅ Quest '{self.id}' concluída! Volte ao NPC.")
 
-    # =========================
-    # ENTREGA
-    # =========================
     def entregar(self, jogador):
         if not self.concluida or self.entregue:
             return False
@@ -60,10 +53,6 @@ class Quest:
         print(f"🪙 Você recebeu {self.recompensa_ouro} de ouro!")
         return True
 
-
-# =========================
-# CARREGAR QUESTS
-# =========================
 def carregar_quests():
     quests = {}
 
@@ -81,6 +70,6 @@ def carregar_quests():
             area_objetivo=q["area_objetivo"],
             quantidade=q["quantidade"],
             recompensa_ouro=q["recompensa_ouro"],
-            dialogos=q.get("dialogos", {}) # <--- Carrega do JSON
+            dialogos=q.get("dialogos", {})
         )
     return quests
