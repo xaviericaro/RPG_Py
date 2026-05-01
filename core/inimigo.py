@@ -25,7 +25,6 @@ class Inimigo:
         self.status = {}
         self.defendendo = False
 
-    # COMBATE
     def ataque_total(self):
         return self.ataque
 
@@ -42,7 +41,6 @@ class Inimigo:
         alvo.vida = max(0, alvo.vida - dano)
         print(f"{self.nome} atacou e causou {dano} de dano!")
 
-    # STATUS
     def aplicar_status(self):
         for efeito in list(self.status):
             self.status[efeito] -= 1
@@ -58,6 +56,5 @@ class Inimigo:
             if self.status[efeito] <= 0:
                 del self.status[efeito]
 
-    # UTILIDADES
     def esta_vivo(self):
         return self.vida > 0

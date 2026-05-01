@@ -5,7 +5,6 @@ from systems.mapa import loop_mapa
 from systems.quest_system import carregar_quests
 from systems.historia import introducao
 
-
 print("=== StormStand ===")
 print("1 - Continuar jogo")
 print("2 - Novo jogo")

@@ -1,11 +1,9 @@
 from systems.inventario import usar_item
 
-
 def batalha(jogador, inimigo):
     print(f"\n⚔️ Um {inimigo.nome} apareceu!")
 
     while jogador.esta_vivo() and inimigo.esta_vivo():
-        # aplica efeitos
         jogador.aplicar_status()
 
         print(

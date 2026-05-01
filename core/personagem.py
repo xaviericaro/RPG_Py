@@ -16,7 +16,6 @@ class Personagem:
         self.pontos_disponiveis = 0
         self.inventario = []
         
-        # Slots de Equipamento
         self.arma = None
         self.armadura = None
 
@@ -24,14 +23,12 @@ class Personagem:
         self.ouro = 0
         self.quests = {}
 
-    # COMBATE
+    # Combate
     def ataque_total(self):
-        # Soma ataque base + ataque da arma equipada
         bonus = self.arma.get("ataque", 0) if self.arma else 0
         return self.ataque + bonus
 
     def defesa_total(self):
-        # Soma defesa base + defesa da armadura equipada
         bonus = self.armadura.get("defesa", 0) if self.armadura else 0
         total = self.defesa + bonus
         return total * 2 if self.defendendo else total
@@ -42,8 +39,7 @@ class Personagem:
         alvo.vida = max(0, alvo.vida - dano_final)
         print(f"🗡️ {self.nome} causou {dano_final} de dano!")
 
-
-    # EQUIPAMENTOS 
+    # Equipamentos
     def equipar_arma(self, nova_arma):
         if "durabilidade" not in nova_arma:
             nova_arma["durabilidade"] = 100 
@@ -63,7 +59,7 @@ class Personagem:
                 print(f"⚠️ Sua {self.arma['nome']} está quebrada e perdeu a eficiência!")
     def equipar_armadura(self, nova_armadura):
         if self.armadura:
-            self.inventario.append(self.armadura) # Devolve a antiga
+            self.inventario.append(self.armadura)
             print(f"📦 {self.armadura['nome']} voltou para o inventário.")
             
         self.armadura = nova_armadura

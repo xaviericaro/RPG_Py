@@ -26,7 +26,6 @@ def loja(jogador):
         else:
             print("❌ Opção inválida.")
 
-# COMPRAR ITENS
 def comprar(jogador, itens_loja):
     print("\n🛒 ITENS À VENDA")
 
@@ -59,7 +58,6 @@ def comprar(jogador, itens_loja):
 
     print(f"✅ Você comprou {item['nome']}!")
 
-# VENDER ITENS
 def vender(jogador):
     if not jogador.inventario:
         print("📦 Seu inventário está vazio.")
@@ -89,7 +87,6 @@ def vender(jogador):
     item = jogador.inventario.pop(escolha - 1)
     preco = item.get("preco", 5)
 
-    # se estiver equipado, desequipa
     if jogador.arma == item:
         jogador.arma = None
     if jogador.armadura == item:

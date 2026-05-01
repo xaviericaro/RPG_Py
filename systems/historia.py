@@ -6,7 +6,6 @@ def escrever(texto, delay=0.02):
         time.sleep(delay)
     print("\n")
 
-# INTRODUÇÃO
 def introducao():
     escrever(
         "Em um mundo ameaçado por forças antigas,\n"
@@ -17,18 +16,15 @@ def introducao():
         "Hoje, um novo herói surge.\n"
     )
 
-# EVENTOS DE HISTÓRIA
+# Eventos de História
 def encontro_goblin():
     escrever("Um Goblin salta das sombras, brandindo uma adaga enferrujada!")
-
 
 def encontro_orc():
     escrever("O chão treme.\nUm Orc Brutal bloqueia seu caminho!")
 
-
 def encontro_lobo():
     escrever("Olhos brilhantes surgem entre as árvores.\nUm Lobo Sombrio ataca!")
-
 
 def chegada_montanha():
     escrever(
@@ -37,7 +33,6 @@ def chegada_montanha():
         "O Dragão Ancião sabe que você chegou.\n"
     )
 
-
 def final_vitoria():
     escrever(
         "Com o último golpe, o Dragão cai.\n"
@@ -45,7 +40,6 @@ def final_vitoria():
         "Seu nome será lembrado.\n"
         "FIM.\n"
     )
-
 
 def final_derrota():
     escrever(
