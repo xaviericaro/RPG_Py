@@ -5,6 +5,8 @@ ITENS = {
     "Pele de Lobo": {"tipo": "material", "valor": 10},
     "Tecido Rasgado": {"tipo": "material", "valor": 5},
     "Escama de Dragão": {"tipo": "material", "valor": 100},
+
+    "Poção de Cura": {"tipo": "consumivel", "cura": 30, "valor": 15},
     
     "Espada de Ferro": {
         "tipo": "arma", 
@@ -17,6 +19,24 @@ ITENS = {
         "defesa": 10, 
         "valor": 80, 
         "durabilidade": 100
+    },
+
+    # Itens de recompensa de missão
+    "Amuleto da Floresta": {
+        "tipo": "armadura",
+        "defesa": 6,
+        "valor": 60,
+        "durabilidade": 100
+    },
+    "Cajado do Eremita": {
+        "tipo": "arma",
+        "ataque": 9,
+        "valor": 90,
+        "durabilidade": 100
+    },
+    "Amuleto Perdido": {
+        "tipo": "material",
+        "valor": 50
     }
 }
 

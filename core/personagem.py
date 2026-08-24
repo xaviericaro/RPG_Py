@@ -22,6 +22,7 @@ class Personagem:
         self.defendendo = False
         self.ouro = 0
         self.quests = {}
+        self.dragao_derrotado = False
 
     # Combate
     def ataque_total(self):

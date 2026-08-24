@@ -1,9 +1,11 @@
 {
   "limpar_floresta": {
     "descricao": "Derrote 2 inimigos na Floresta.",
+    "tipo_evento": "matar_area",
     "area_objetivo": "Floresta",
     "quantidade": 2,
     "recompensa_ouro": 50,
+    "recompensa_xp": 30,
     "dialogos": {
       "inicio": "Socorro! A floresta está cheia de monstros. Você pode me ajudar?",
       "progresso": "Ainda sinto o perigo vindo da floresta... continue lutando!",
@@ -11,11 +13,120 @@
       "entregue": "Graças a você, as crianças podem brincar na floresta novamente."
     }
   },
+  "provisoes_urgentes": {
+    "descricao": "Entregue 3x Pele de Lobo para o Ancião, que precisa fazer agasalhos para o inverno.",
+    "tipo_evento": "entregar_item",
+    "alvo": "Pele de Lobo",
+    "area_objetivo": null,
+    "quantidade": 3,
+    "recompensa_ouro": 40,
+    "recompensa_xp": 20,
+    "dialogos": {
+      "inicio": "O inverno se aproxima e não temos agasalhos. Traga peles de lobo da floresta, sim?",
+      "progresso": "As peles ainda não chegaram... o frio está próximo.",
+      "concluida": "Perfeito! Com essas peles poderemos nos aquecer.",
+      "entregue": "Sua ajuda nunca será esquecida por este vilarejo."
+    }
+  },
+  "cacada_orc": {
+    "descricao": "O vilarejo está sendo assombrado por Orcs Brutais. Derrote 3.",
+    "tipo_evento": "matar_alvo",
+    "alvo": "Orc Brutal",
+    "area_objetivo": "Floresta",
+    "quantidade": 3,
+    "recompensa_ouro": 60,
+    "recompensa_xp": 40,
+    "dialogos": {
+      "inicio": "Aqueles Orcs andam roubando nossas plantações. Dê um fim a isso, guerreiro(a)!",
+      "progresso": "Ainda ouço os Orcs rugindo à noite... continue caçando.",
+      "concluida": "Excelente trabalho! O vilarejo pode respirar aliviado.",
+      "entregue": "Você é um verdadeiro protetor deste lugar."
+    }
+  },
+  "suprimentos_comerciante": {
+    "descricao": "Um comerciante itinerante precisa de 4x Minério de Ferro para reabastecer sua carroça.",
+    "tipo_evento": "entregar_item",
+    "alvo": "Minério de Ferro",
+    "area_objetivo": null,
+    "quantidade": 4,
+    "recompensa_ouro": 45,
+    "recompensa_xp": 15,
+    "dialogos": {
+      "inicio": "Psst! Preciso de minério de ferro para meus negócios. Traz uns 4 pra mim?",
+      "progresso": "Ainda preciso daquele minério, viu?",
+      "concluida": "Isso mesmo! Negócios fechados.",
+      "entregue": "Sempre um prazer fazer negócio com você."
+    }
+  },
+  "amuleto_perdido": {
+    "descricao": "Uma aldeã perdeu um amuleto de família em algum lugar da floresta. Encontre-o.",
+    "tipo_evento": "coletar_item",
+    "alvo": "Amuleto Perdido",
+    "area_objetivo": null,
+    "quantidade": 1,
+    "recompensa_ouro": 90,
+    "recompensa_xp": 25,
+    "dialogos": {
+      "inicio": "Perdi o amuleto da minha avó na floresta... será que ainda está lá?",
+      "progresso": "Você já encontrou meu amuleto? Ele é pequeno, fácil de passar despercebido.",
+      "concluida": "MEU AMULETO! Não sei como agradecer!",
+      "entregue": "Ele vai ficar guardado com muito carinho. Obrigada, de coração."
+    }
+  },
+  "remedio_para_cacador": {
+    "descricao": "Um caçador ferido na floresta precisa de 2x Poção de Cura.",
+    "tipo_evento": "entregar_item",
+    "alvo": "Poção de Cura",
+    "area_objetivo": null,
+    "quantidade": 2,
+    "recompensa_ouro": 30,
+    "recompensa_xp": 20,
+    "dialogos": {
+      "inicio": "Ugh... um lobo me pegou de surpresa. Tem alguma poção de cura sobrando?",
+      "progresso": "Estou aguentando firme, mas aquelas poções fariam bem...",
+      "concluida": "Aaah, muito melhor! Você salvou minha pele.",
+      "entregue": "Fica esperto por essas bandas, viu? A floresta não perdoa."
+    }
+  },
+  "licantropia": {
+    "descricao": "Lobos Sombrios têm se multiplicado demais. Derrote 4 deles.",
+    "tipo_evento": "matar_alvo",
+    "alvo": "Lobo Sombrio",
+    "area_objetivo": "Floresta",
+    "quantidade": 4,
+    "recompensa_ouro": 70,
+    "recompensa_xp": 50,
+    "recompensa_item": "Cajado do Eremita",
+    "dialogos": {
+      "inicio": "Sinto o desequilíbrio nesta floresta... os lobos sombrios não deveriam ser tantos. Ajude-me a conter isso.",
+      "progresso": "O equilíbrio ainda não retornou. Continue.",
+      "concluida": "A floresta respira mais tranquila agora. Aceite este presente, você o merece.",
+      "entregue": "Que os espíritos da mata sempre guiem seus passos."
+    }
+  },
+  "cacada_avancada": {
+    "descricao": "Prove seu valor: derrote 5 criaturas na Floresta.",
+    "tipo_evento": "matar_area",
+    "area_objetivo": "Floresta",
+    "quantidade": 5,
+    "recompensa_ouro": 100,
+    "recompensa_xp": 60,
+    "recompensa_item": "Amuleto da Floresta",
+    "dialogos": {
+      "inicio": "Já provou seu valor limpando a área básica? Ótimo. Agora mostre que consegue ir além: 5 abates.",
+      "progresso": "Continue caçando, ainda falta um bom trecho.",
+      "concluida": "Impressionante! Poucos batedores conseguem esse número.",
+      "entregue": "Você é digno do título de Batedor Sênior."
+    }
+  },
   "dragao_ancião": {
     "descricao": "Derrote o Dragão Ancião na Montanha.",
+    "tipo_evento": "matar_alvo",
+    "alvo": "Dragão Ancião",
     "area_objetivo": "Montanha",
     "quantidade": 1,
     "recompensa_ouro": 200,
+    "recompensa_xp": 150,
     "dialogos": {
       "inicio": "O céu escureceu... o Dragão despertou. Você é nossa única esperança!",
       "progresso": "Ele está lá em cima, eu consigo ouvir o bater das asas...",

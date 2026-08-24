@@ -21,9 +21,8 @@ definir_save(save_path)
 
 # Continua Jogo
 if opcao == "1" and os.path.exists(save_path):
+    # carregar_jogo() já reconstrói jogador.quests com o progresso salvo aplicado
     jogador, area_atual, dados_quests_salvas = carregar_jogo()
-
-    jogador.quests = carregar_quests()
 
     print(f"\n🔄 Bem-vindo de volta, {jogador.nome}!")
     print(f"📍 Última localização: {area_atual}")

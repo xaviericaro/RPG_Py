@@ -172,7 +172,7 @@ MAPA = {
     "Vilarejo": {
         "descricao": "Um vilarejo tranquilo, com pessoas amigáveis.",
         "opcoes": [
-            "Falar com o Ancião",
+            "Falar com alguém",
             "Ir à Loja",
             "Descansar",
             "Distribuir Pontos",
@@ -188,30 +188,126 @@ MAPA = {
         "descricao": "Uma floresta sombria cheia de perigos.",
         "opcoes": [
             "Explorar",
+            "Falar com alguém",
             "Voltar ao Vilarejo",
             "Seguir para a Montanha",
         ],
         "destinos": [
-            None, "Vilarejo", "Montanha"
+            None, None, "Vilarejo", "Montanha"
         ],
     },
     "Montanha": {
         "descricao": "Uma montanha onde o Dragão Ancião habita.",
         "opcoes": [
+            "Falar com alguém",
             "Enfrentar o Dragão",
             "Voltar para a Floresta",
         ],
         "destinos": [
-            None, "Floresta"
+            None, None, "Floresta"
         ],
     },
 }
 
-npc_vilarejo = NPC(nome="Ancião do Vilarejo", quest_id="limpar_floresta")
+# --- NPCs distribuídos pelas áreas ---
+npc_anciao = NPC(
+    nome="Ancião do Vilarejo",
+    quest_ids=["limpar_floresta", "provisoes_urgentes"],
+)
+npc_guarda = NPC(
+    nome="Guarda do Vilarejo",
+    quest_ids=["cacada_orc"],
+    saudacao="Fique atento, viajante. A floresta anda perigosa.",
+)
+npc_comerciante = NPC(
+    nome="Comerciante Itinerante",
+    quest_ids=["suprimentos_comerciante"],
+    saudacao="Ah, hoje não tenho banca armada. Só de passagem.",
+)
+npc_aldea = NPC(
+    nome="Aldeã Preocupada",
+    quest_ids=["amuleto_perdido"],
+    saudacao="Ando distraída hoje, perdão.",
+)
+
+npc_cacador = NPC(
+    nome="Caçador Ferido",
+    quest_ids=["remedio_para_cacador"],
+    saudacao="Ainda de pé, mas por pouco...",
+)
+npc_eremita = NPC(
+    nome="Eremita da Floresta",
+    quest_ids=["licantropia"],
+    saudacao="A floresta fala comigo, viajante. Ela anda inquieta.",
+)
+npc_batedor = NPC(
+    nome="Batedor da Floresta",
+    quest_ids=["cacada_avancada"],
+    saudacao="Só os fortes sobrevivem por aqui.",
+)
+
+npc_guardiao = NPC(
+    nome="Guardião da Montanha",
+    quest_ids=["dragao_ancião"],
+    saudacao="Você não deveria estar aqui... a menos que esteja pronto.",
+)
+
+NPCS_POR_AREA = {
+    "Vilarejo": [npc_anciao, npc_guarda, npc_comerciante, npc_aldea],
+    "Floresta": [npc_cacador, npc_eremita, npc_batedor],
+    "Montanha": [npc_guardiao],
+}
+
+
+def falar_com_alguem(jogador, area_atual):
+    npcs = NPCS_POR_AREA.get(area_atual, [])
+
+    if not npcs:
+        print("\n🙅 Não há ninguém por aqui para conversar.")
+        return
+
+    if len(npcs) == 1:
+        npcs[0].falar(jogador)
+        return
+
+    print("\n🗣️ Com quem deseja falar?")
+    for i, npc in enumerate(npcs, start=1):
+        print(f"{i} - {npc.nome}")
+    print("0 - Cancelar")
+
+    escolha = input(">>> ")
+    if not escolha.isdigit():
+        return
+    escolha = int(escolha)
+    if escolha == 0:
+        return
+    if 1 <= escolha <= len(npcs):
+        npcs[escolha - 1].falar(jogador)
+    else:
+        print("❌ Opção inválida.")
+
+
+def obter_area(area_nome, jogador):
+    """Retorna a área com as opções ajustadas ao estado atual do jogador
+    (ex.: remove a luta contra o Dragão depois que ele já foi derrotado)."""
+    area = dict(MAPA[area_nome])
+    opcoes = list(area["opcoes"])
+    destinos = list(area["destinos"])
+
+    if area_nome == "Montanha" and getattr(jogador, "dragao_derrotado", False):
+        if "Enfrentar o Dragão" in opcoes:
+            idx = opcoes.index("Enfrentar o Dragão")
+            opcoes.pop(idx)
+            destinos.pop(idx)
+
+    area["opcoes"] = opcoes
+    area["destinos"] = destinos
+    return area
+
 
 def loop_mapa(jogador, area_atual):
     while True:
-        area = MAPA[area_atual]
+        area = obter_area(area_atual, jogador)
 
         arma_nome = jogador.arma["nome"] if jogador.arma else "Mãos Nuas"
         armor_nome = jogador.armadura["nome"] if jogador.armadura else "Trapos"
@@ -241,8 +337,8 @@ def loop_mapa(jogador, area_atual):
         opcao_texto = area["opcoes"][escolha_idx]
         destino = area["destinos"][escolha_idx]
 
-        if opcao_texto == "Falar com o Ancião":
-            npc_vilarejo.falar(jogador)
+        if opcao_texto == "Falar com alguém":
+            falar_com_alguem(jogador, area_atual)
             salvar_jogo(jogador, area_atual)
             continue
 
@@ -297,8 +393,20 @@ def loop_mapa(jogador, area_atual):
                     jogador.inventario.append(item_ganho)
                     print(f"📦 LOOT: Você encontrou [{item_ganho['nome']}]!")
 
+            # Achado raro: item de missão que não vem de nenhum inimigo específico
+            quest_amuleto = jogador.quests.get("amuleto_perdido")
+            if (
+                quest_amuleto and quest_amuleto.aceita and not quest_amuleto.entregue
+                and not any(it["nome"] == "Amuleto Perdido" for it in jogador.inventario)
+                and random.random() < 0.08
+            ):
+                item_raro = ITENS["Amuleto Perdido"].copy()
+                item_raro["nome"] = "Amuleto Perdido"
+                jogador.inventario.append(item_raro)
+                print("✨ Entre as folhas caídas, algo reluz... você encontrou o [Amuleto Perdido]!")
+
             for quest in jogador.quests.values():
-                quest.registrar_evento(area_atual)
+                quest.registrar_evento(area=area_atual, nome_inimigo=inimigo.nome)
 
             salvar_jogo(jogador, area_atual)
             continue
@@ -308,8 +416,17 @@ def loop_mapa(jogador, area_atual):
             chegada_montanha()
             dragao = inimigo_aleatorio("Montanha")
             if batalha(jogador, dragao):
+                jogador.ganhar_xp(dragao.xp_drop)
+                jogador.ouro += dragao.ouro_drop
+                jogador.dragao_derrotado = True
+
+                for quest in jogador.quests.values():
+                    quest.registrar_evento(area=area_atual, nome_inimigo=dragao.nome)
+
                 final_vitoria()
-                return
+                print("\n🏔️ O corpo do Dragão jaz na Montanha. Talvez alguém queira saber disso...")
+                salvar_jogo(jogador, area_atual)
+                continue
             else:
                 print("💀 O Dragão derrotou você.")
                 return

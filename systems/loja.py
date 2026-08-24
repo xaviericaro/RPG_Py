@@ -87,9 +87,11 @@ def vender(jogador):
     item = jogador.inventario.pop(escolha - 1)
     preco = item.get("preco", 5)
 
-    if jogador.arma == item:
+    # Usa "is" (identidade) em vez de "==" (valor) para evitar desequipar
+    # o item errado quando dois itens têm os mesmos atributos.
+    if jogador.arma is item:
         jogador.arma = None
-    if jogador.armadura == item:
+    if jogador.armadura is item:
         jogador.armadura = None
 
     jogador.ouro += preco

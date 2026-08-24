@@ -3,6 +3,7 @@ import os
 import re 
 
 from core.jogador import Guerreiro, Mago, Arqueiro
+from systems.quest_system import carregar_quests
 
 SAVE_FILE = None
 
@@ -46,6 +47,7 @@ def salvar_jogo(jogador, area_atual):
             "inventario": jogador.inventario,
             "arma": jogador.arma,
             "armadura": jogador.armadura,
+            "dragao_derrotado": getattr(jogador, "dragao_derrotado", False),
         },
         "quests": {},
     }
@@ -53,6 +55,7 @@ def salvar_jogo(jogador, area_atual):
     # Salva status da quest
     for qid, quest in jogador.quests.items():
         dados["quests"][qid] = {
+            "aceita": quest.aceita,
             "progresso": quest.progresso,
             "concluida": quest.concluida,
             "entregue": getattr(quest, "entregue", False),
@@ -101,9 +104,19 @@ def carregar_jogo():
     jogador.inventario = info["inventario"]
     jogador.arma = info["arma"]
     jogador.armadura = info["armadura"]
+    jogador.dragao_derrotado = info.get("dragao_derrotado", False)
 
-    # Recria Quest
-    jogador.quests = {}
+    # Recria as quests a partir da definição em data/quests.json
+    # e aplica o progresso salvo por cima (antes esse progresso era descartado).
+    jogador.quests = carregar_quests()
+    for qid, quest in jogador.quests.items():
+        salvo = dados_quests_salvas.get(qid)
+        if not salvo:
+            continue
+        quest.aceita = salvo.get("aceita", False)
+        quest.progresso = salvo.get("progresso", 0)
+        quest.concluida = salvo.get("concluida", False)
+        quest.entregue = salvo.get("entregue", False)
 
     area_atual = dados.get("area", "Vilarejo")
 
