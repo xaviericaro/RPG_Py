@@ -57,7 +57,6 @@ else:
         {"nome": "Espada Enferrujada", "tipo": "arma", "ataque": 3},
     ]
 
-
     jogador.quests = carregar_quests()
 
     area_atual = "Vilarejo"

@@ -2,18 +2,18 @@
     "classe": "Guerreiro",
     "area": "Vilarejo",
     "jogador": {
-        "nome": "Lucas",
-        "nivel": 1,
+        "nome": "Xavu",
+        "nivel": 2,
         "pontos_disponiveis": 0,
-        "xp": 90,
-        "xp_para_proximo": 100,
-        "vida": 120,
-        "vida_max": 120,
-        "mana": 30,
-        "mana_max": 30,
-        "ataque": 15,
-        "defesa": 10,
-        "ouro": 80,
+        "xp": 50,
+        "xp_para_proximo": 150,
+        "vida": 140,
+        "vida_max": 140,
+        "mana": 45,
+        "mana_max": 45,
+        "ataque": 21,
+        "defesa": 14,
+        "ouro": 90,
         "inventario": [
             {
                 "nome": "Poção de Cura",
@@ -24,18 +24,78 @@
                 "nome": "Espada Enferrujada",
                 "tipo": "arma",
                 "ataque": 3
+            },
+            {
+                "tipo": "material",
+                "valor": 5,
+                "nome": "Tecido Rasgado"
+            },
+            {
+                "tipo": "material",
+                "valor": 5,
+                "nome": "Tecido Rasgado"
+            },
+            {
+                "tipo": "material",
+                "valor": 10,
+                "nome": "Pele de Lobo"
             }
         ],
         "arma": null,
-        "armadura": null
+        "armadura": null,
+        "dragao_derrotado": false
     },
     "quests": {
         "limpar_floresta": {
+            "aceita": true,
             "progresso": 2,
             "concluida": true,
             "entregue": true
         },
+        "provisoes_urgentes": {
+            "aceita": false,
+            "progresso": 0,
+            "concluida": false,
+            "entregue": false
+        },
+        "cacada_orc": {
+            "aceita": true,
+            "progresso": 0,
+            "concluida": false,
+            "entregue": false
+        },
+        "suprimentos_comerciante": {
+            "aceita": false,
+            "progresso": 0,
+            "concluida": false,
+            "entregue": false
+        },
+        "amuleto_perdido": {
+            "aceita": false,
+            "progresso": 0,
+            "concluida": false,
+            "entregue": false
+        },
+        "remedio_para_cacador": {
+            "aceita": false,
+            "progresso": 0,
+            "concluida": false,
+            "entregue": false
+        },
+        "licantropia": {
+            "aceita": false,
+            "progresso": 0,
+            "concluida": false,
+            "entregue": false
+        },
+        "cacada_avancada": {
+            "aceita": false,
+            "progresso": 0,
+            "concluida": false,
+            "entregue": false
+        },
         "dragao_ancião": {
+            "aceita": false,
             "progresso": 0,
             "concluida": false,
             "entregue": false
