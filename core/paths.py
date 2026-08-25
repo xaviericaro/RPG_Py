@@ -1,9 +1,11 @@
 """Resolução de caminhos que funciona tanto rodando `python main.py`
 quanto empacotado como .exe (PyInstaller).
 
-Sem isso, caminhos como "data/quests.json" ou "saves/save_slot_1.json"
-só funcionam se você rodar o programa exatamente de dentro da pasta do
-projeto — o que quebra fácil quando é um executável na Área de Trabalho.
+Tanto os dados de leitura (data/quests.json) quanto os dados graváveis
+(saves/) são resolvidos a partir da mesma pasta: onde o .exe realmente
+está. Isso evita depender da extração temporária do PyInstaller
+(sys._MEIPASS), que é fácil de configurar errado num build manual —
+basta colocar a pasta "data" do lado do executável.
 """
 import os
 import sys
@@ -14,24 +16,19 @@ def _congelado():
     return bool(getattr(sys, "frozen", False))
 
 
-def dir_dados():
-    """Pasta onde ficam os arquivos de dados somente-leitura (ex.: data/quests.json).
-
-    Quando empacotado com `--add-data`, o PyInstaller extrai esses arquivos
-    para uma pasta temporária apontada por sys._MEIPASS.
-    """
+def dir_base():
+    """Pasta onde o .exe (ou o main.py) realmente está."""
     if _congelado():
-        return sys._MEIPASS  # type: ignore[attr-defined]
+        return os.path.dirname(os.path.abspath(sys.executable))
     # core/paths.py -> sobe um nível (core/) -> raiz do projeto
     return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def dir_app():
-    """Pasta onde o .exe (ou o main.py) realmente está.
+# Mantidos como aliases para não quebrar quem já importa estes nomes:
+# ambos apontam para a mesma pasta base agora.
+def dir_dados():
+    return dir_base()
 
-    Usada para dados GRAVÁVEIS, como a pasta saves/ — ela precisa sobreviver
-    entre execuções, e sys._MEIPASS é apagada toda vez que o programa fecha.
-    """
-    if _congelado():
-        return os.path.dirname(os.path.abspath(sys.executable))
-    return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+def dir_app():
+    return dir_base()
