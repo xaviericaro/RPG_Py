@@ -6,29 +6,52 @@ echo   Gerando o executavel do StormStand...
 echo ============================================
 echo.
 
-python -m pip install --upgrade pyinstaller >nul
+echo Verificando Python...
+py --version
+
 if errorlevel 1 (
-    echo Falha ao instalar o PyInstaller. Verifique se o Python esta instalado
-    echo e se o comando "python" funciona no seu terminal.
+    echo.
+    echo Python nao foi encontrado.
     pause
     exit /b 1
 )
 
-pyinstaller --onefile --console --name StormStand --add-data "data;data" main.py
-
 echo.
-if exist dist\StormStand.exe (
-    echo ============================================
-    echo   Pronto! O executavel esta em:
-    echo   dist\StormStand.exe
+echo Instalando/atualizando PyInstaller...
+py -m pip install --upgrade pyinstaller
+
+if errorlevel 1 (
     echo.
-    echo   Copie StormStand.exe para a pasta "saves"
-    echo   ficar do lado dele (sera criada sozinha no
-    echo   primeiro "Salvar e Sair"^) e crie um atalho
-    echo   dele na Area de Trabalho.
-    echo ============================================
-) else (
-    echo Algo deu errado. Veja a mensagem de erro acima.
+    echo Falha ao instalar o PyInstaller.
+    echo Veja a mensagem de erro acima.
+    pause
+    exit /b 1
 )
 
+echo.
+echo Gerando executavel...
+py -m PyInstaller --onefile --console --name StormStand --add-data "data;data" main.py
+
+if errorlevel 1 (
+    echo.
+    echo Erro ao gerar o executavel.
+    echo Veja a mensagem acima.
+    pause
+    exit /b 1
+)
+
+echo.
+if exist "dist\StormStand.exe" (
+    echo ============================================
+    echo   PRONTO! EXECUTAVEL GERADO COM SUCESSO!
+    echo.
+    echo   Local:
+    echo   dist\StormStand.exe
+    echo ============================================
+) else (
+    echo.
+    echo O PyInstaller terminou, mas o arquivo nao foi encontrado.
+)
+
+echo.
 pause
