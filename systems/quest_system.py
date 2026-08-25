@@ -108,25 +108,9 @@ def carregar_quests():
     quests = {}
 
     if not os.path.exists(QUESTS_FILE):
+        print(f"⚠️  Não encontrei o arquivo de missões em: {QUESTS_FILE}")
+        print("   (o jogo vai continuar, mas nenhuma missão vai aparecer)")
         return quests
-
-    with open(QUESTS_FILE, encoding="utf-8") as f:
-        dados = json.load(f)
-
-    for quest_id, q in dados.items():
-        quests[quest_id] = Quest(
-            quest_id=quest_id,
-            descricao=q["descricao"],
-            tipo_evento=q.get("tipo_evento", "matar_area"),
-            area_objetivo=q.get("area_objetivo"),
-            quantidade=q["quantidade"],
-            recompensa_ouro=q.get("recompensa_ouro", 0),
-            dialogos=q.get("dialogos", {}),
-            alvo=q.get("alvo"),
-            recompensa_xp=q.get("recompensa_xp", 0),
-            recompensa_item=q.get("recompensa_item"),
-        )
-    return quests
 
 
 def aplicar_progresso_salvo(quests, dados_salvos):
